@@ -1,0 +1,171 @@
+<div class="container">
+  <div class="mt-2">
+    <div class="p-grid pt-2 pb-2">
+      <div class="p-col-12">
+        <h3 class="font-weight">Empréstimos</h3>
+      </div>
+    </div>
+
+    <div class="separador"></div>
+
+    <form [formGroup]="formFiltro" (submit)="findEmprestimos()">
+      <div class="p-grid pt-2 pb-2">
+        <div class="p-col-4">
+          <label for="data">Data</label>
+          <p-calendar
+            id="data"
+            name="data"
+            formControlName="data"
+            [locale]="pt"
+            [dateFormat]="dateFormat"
+            [inline]="false"
+            [readonlyInput]="false"
+            [showIcon]="true"
+            class="ui-fluid">
+          </p-calendar>
+        </div>
+
+        <div class="p-col-4">
+          <label for="usuario">Usuário (Número RA ou E-mail)</label>
+          <p-autoComplete
+            id="usuario"
+            name="usuario"
+            formControlName="usuario"
+            [suggestions]="usuarios"
+            (completeMethod)="loadUsuarios($event)"
+            field="nome"
+            [minLength]="3"
+            class="ui-fluid">
+
+            <ng-template let-usuario pTemplate="item">
+              <div class="ui-helper-clearfix">{{ usuario.nome }} | {{ usuario.email }} | {{ usuario.nrora }}</div>
+            </ng-template>
+          </p-autoComplete>
+        </div>
+
+        <div class="p-col-4">
+          <label for="situacao">Situação</label>
+          <p-multiSelect
+            id="situacao"
+            formControlName="situacao"
+            defaultLabel="Selecionar..."
+            [options]="situacoes"
+            [virtualScroll]="true"
+            [filter]="true"
+            selectedItemsLabel="{0} itens selecionados"
+            class="ui-fluid">
+          </p-multiSelect>
+        </div>
+      </div>
+
+      <div class="pt-2 pb-2">
+        <button
+          type="submit"
+          class="btn btn-warning mr-2">Pesquisar
+        </button>
+
+        <button
+          type="button"
+          [routerLink]="['novo']"
+          class="btn btn-dark">Novo
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div class="mt-3 mb-3">
+    <p-table #tableEmprestimos
+      styleClass="p-2"
+      [value]="emprestimos"
+      [lazy]="true"
+      [paginator]="true"
+      [rows]="10"
+      [totalRecords]="totalRecords"
+      (onLazyLoad)="loadLazy($event)"
+      [lazyLoadOnInit]="false"
+      dataKey="idSaida"
+      [responsive]="true">
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th class="col-expand"></th>
+          <th field="idSaida" class="col-codigo">Código</th>
+          <th field="data">Data</th>
+          <th field="finalidadeSaida">Finalidade</th>
+          <th field="usuario">Usuário</th>
+          <th field="situacao">Situação</th>
+          <th class="text-center col-acoes-emprestimos">Ações</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-emprestimo let-expanded="expanded">
+        <tr>
+          <td>
+            <a href="" [pRowToggler]="emprestimo" style="color: black;">
+              <span [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></span>
+            </a>
+          </td>
+          <td>{{ emprestimo.idSaida }}</td>
+          <td>{{ emprestimo.data | date:'dd/MM/y'  }}</td>
+          <td>{{ emprestimo.finalidadeSaida | finalidadeSaida }}</td>
+          <td>{{ emprestimo.usuario.nome }}</td>
+          <td>
+            <span [ngClass]="getBadgeClass(emprestimo.situacao)">
+              {{ emprestimo.situacao | situacaoSaida }}
+            </span>
+          </td>
+          <td class="text-center col-acoes-emprestimos">
+            <button pButton
+              (click)="edit(emprestimo.idSaida)"
+              pTooltip="Editar"
+              icon="pi pi-pencil"
+              style="width: 32px;">
+            </button>
+
+            <button pButton
+              (click)="remove(emprestimo.idSaida)"
+              pTooltip="Excluir"
+              icon="pi pi-trash"
+              class="ui-button-danger ml-1"
+              style="width: 32px;">
+            </button>
+
+            <button pButton
+              type="button"
+              *ngIf="emprestimoAprovado(emprestimo.situacao)"
+              (click)="encerrarEmprestimo(emprestimo.idSaida)"
+              pTooltip="Encerrar Empréstimo"
+              icon="pi pi-thumbs-up"
+              class="ml-1"
+              style="width: 32px;">
+
+            </button>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="rowexpansion" let-emprestimo>
+        <tr>
+          <td [attr.colspan]="7">
+            <tr class="p-grid">
+              <th class="p-col-6 text-center">Equipamento</th>
+              <th class="p-col-6 text-center">Quantidade</th>
+            </tr>
+            <tr *ngFor="let item of emprestimo.itens" class="p-grid">
+              <td class="p-col-6 text-center">{{ item.equipamento.nome }}</td>
+              <td class="p-col-6 text-center">{{ item.quantidade }}</td>
+            </tr>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td [attr.colspan]="7">Nenhum empréstimo para ser exibido.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<p-confirmDialog></p-confirmDialog>

@@ -1,0 +1,23 @@
+<form [formGroup]="formFiltro" (submit)="devePesquisarEquipamentos()">
+  <div class="p-grid pt-2 pb-2">
+    <div class="p-col-2">
+      <label for="patrimonio">Nro. Patrimônio</label>
+      <input pInputText type="number" id="patrimonio" name="patrimonio" formControlName="patrimonio" class="form-control" />
+    </div>
+
+    <div class="p-col-5">
+      <label for="nome">Nome</label>
+      <input pInputText type="text" id="nome" name="nome" formControlName="nome" class="form-control"/>
+    </div>
+
+    <div class="p-col-5">
+      <label for="localizacao">Localização</label>
+      <input pInputText type="text"id="localizacao" name="localizacao"  formControlName="localizacao" class="form-control" />
+    </div>
+  </div>
+
+  <div class="pt-2 pb-2">
+    <button type="submit" class="btn btn-warning mr-2">Pesquisar</button>
+    <button type="button" [routerLink]="['novo']" class="btn btn-dark">Novo</button>
+  </div>
+</form>

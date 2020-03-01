@@ -1,0 +1,147 @@
+body .ui-paginator {
+  background-color: white;
+  border: none;
+  margin-top: 0.5em;
+}
+
+p-table .ui-paginator .ui-paginator-icon {
+  color: black;
+}
+
+body .ui-paginator .ui-paginator-pages .ui-paginator-page {
+  color: black;
+}
+
+body .ui-paginator .ui-paginator-pages .ui-paginator-page:not(.ui-state-active):hover {
+  background-color: lightgray;
+  color: black;
+}
+
+body .ui-paginator .ui-paginator-pages .ui-paginator-page.ui-state-active {
+  background-color: black;
+  color: white;
+}
+
+.ui-table .ui-paginator-bottom {
+  border-top: 0 none;
+}
+
+p-table .ui-table .ui-table-thead > tr > th {
+  background-color: white;
+  border: none;
+  border-bottom: 1px solid lightgray;
+}
+
+p-table .ui-table .ui-table-tbody > tr > td {
+  background-color: white;
+  border: none;
+  border-bottom: 1px solid lightgray;
+}
+
+body .ui-table .ui-table-caption {
+  background-color: white;
+  border: none;
+  border-bottom: 1px solid lightgray;
+}
+
+body .ui-table .ui-table-summary {
+  background-color: white;
+  border: none;
+  padding-top: 1em;
+  padding-left: 0.25em;
+}
+
+body .ui-button {
+  background-color: black;
+  color: white;
+  border: 1px solid black;
+}
+
+body .ui-button:enabled:hover {
+  background-color: black;
+  color: white;
+  border: 1px solid black;
+}
+
+body .ui-dialog .ui-dialog-titlebar {
+  background-color: white;
+}
+
+body .ui-chkbox .ui-chkbox-box.ui-state-active {
+  background-color: white;
+  color: black;
+  border-color: #a6a6a6;
+}
+
+body .ui-radiobutton .ui-radiobutton-box.ui-state-active .ui-radiobutton-icon {
+  background-color: black;
+  border-color: #a6a6a6;
+}
+
+body .ui-radiobutton .ui-radiobutton-box.ui-state-active.ui-state-focus {
+  background-color: white;
+  color: black;
+  border-color: #a6a6a6;
+}
+
+body .ui-radiobutton .ui-radiobutton-box.ui-state-active {
+  background-color: white;
+  color: black;
+  border-color: black;
+}
+
+body .ui-radiobutton .ui-radiobutton-box.ui-state-active:not(.ui-state-disabled):hover {
+  background-color: white;
+  color: black;
+  border-color: black;
+}
+
+body .ui-chkbox .ui-chkbox-box.ui-state-active:not(.ui-state-disabled):hover {
+  border-color: black;
+  background-color: white;
+  color: black;
+}
+
+body .ui-chkbox .ui-chkbox-box.ui-state-active.ui-state-focus {
+  background-color: white;
+  color: black;
+  border-color: black;
+}
+
+body .ui-chkbox .ui-chkbox-box.ui-state-focus {
+  background-color: white;
+  color: black;
+  border-color: black;
+}
+
+body .ui-fileupload-choose:not(.ui-state-disabled):hover {
+  background-color: black;
+  color: white;
+  border-color: black;
+}
+
+body .ui-progressbar .ui-progressbar-value {
+  border: 0 none;
+  margin: 0;
+  background: black;
+}
+
+body .ui-inputtext:enabled:focus:not(.ui-state-error) {
+  border-color: black;
+  outline: 0 none;
+  box-shadow: none;
+}
+
+.form-control:focus {
+  border-color: black;
+  outline: 0 none;
+  box-shadow: none;
+}
+
+body .ui-datepicker table {
+  font-size: 0.9em;
+}
+
+body .ui-datepicker table td {
+  padding: 0.1em;
+}

@@ -1,0 +1,30 @@
+<p-card header="Equipamentos x Estoque">
+  <p-table [value]="(equipamentos$ | async)" [scrollable]="true" scrollHeight="200px">
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Código</th>
+        <th>Nome</th>
+        <th>Patrimônio</th>
+        <th>Qtde. Mínima</th>
+        <th>Saldo</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-equipamento>
+      <tr>
+        <td>{{ equipamento.idequipamento }}</td>
+        <td>{{ equipamento.nome }}</td>
+        <td>{{ equipamento.patrimonio }}</td>
+        <td>{{ equipamento.qtdeminima }}</td>
+        <td>{{ equipamento.saldo }}</td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td [attr.colspan]="5">Nenhum equipamento com estoque se esgotando.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-card>

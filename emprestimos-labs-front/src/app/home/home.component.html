@@ -1,0 +1,11 @@
+<div class="container">
+  <div class="mt-2" *ngIf="isAdminOrLaboratorista(); else homeAluno">
+    <app-home-lab-admin></app-home-lab-admin>  
+  </div>
+
+  <ng-template #homeAluno>
+    <div class="mt-2">
+      <app-home-aluno-professor></app-home-aluno-professor>
+    </div>
+  </ng-template>
+</div>

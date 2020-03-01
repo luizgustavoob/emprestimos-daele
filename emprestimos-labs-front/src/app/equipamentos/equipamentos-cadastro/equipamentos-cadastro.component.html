@@ -1,0 +1,185 @@
+<div class="container">
+  <div class="mt-2">
+    <div class="p-grid pt-2 pb-2">
+      <div class="p-col-12">
+        <h3 class="font-weight">Cadastro de Equipamento</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="separador"></div>
+
+  <div class="pt-2 mb-3">
+    <form [formGroup]="formEquipamento" (submit)="save()" autocomplete="off">
+      <div class="p-grid">
+        <div class="p-col-2">
+          <label for="idEquipamento">Código</label>
+          <input pInputText
+            type="number"
+            id="idEquipamento"
+            formControlName="idEquipamento"
+            class="form-control"
+            readonly>
+        </div>
+
+        <div class="p-col-10">
+          <label for="nome">Nome do Equipamento</label>
+          <input pInputText
+            type="text"
+            id="nome"
+            formControlName="nome"
+            class="form-control">
+
+          <app-message-error
+            [control]="formEquipamento.get('nome')"
+            error="required"
+            text="Informe o nome.">
+          </app-message-error>
+
+          <app-message-error
+            [control]="formEquipamento.get('nome')"
+            error="maxlength"
+            text="Informe, no máximo,
+              {{ formEquipamento.get('nome').errors?.maxlength?.requiredLength }} caracteres.">
+          </app-message-error>
+        </div>
+      </div>
+
+      <div class="p-grid">
+        <div class="p-col-12">
+          <label for="descricao">Descrição do Equipamento</label>
+          <textarea pInputTextarea
+            id="descricao"
+            formControlName="descricao"
+            [rows]="3"
+            class="form-control">
+          </textarea>
+
+          <app-message-error
+            [control]="formEquipamento.get('descricao')"
+            error="maxlength"
+            text="Informe, no máximo,
+              {{ formEquipamento.get('descricao').errors?.maxlength?.requiredLength }} caracteres.">
+          </app-message-error>
+        </div>
+      </div>
+
+      <div class="p-grid">
+        <div class="p-col-4">
+          <label for="patrimonio">Número Patrimônio</label>
+          <input pInputText
+            type="number"
+            id="patrimonio"
+            formControlName="patrimonio"
+            class="form-control">
+
+          <app-message-error
+            [control]="formEquipamento.get('patrimonio')"
+            error="required"
+            text="Informe o número do patrimônio.">
+          </app-message-error>
+        </div>
+
+        <div class="p-col-4">
+          <label for="quantidadeMinima">Estoque mínimo</label>
+          <input pInputText
+            type="number"
+            id="quantidadeMinima"
+            formControlName="quantidadeMinima"
+            class="form-control">
+
+          <app-message-error
+            [control]="formEquipamento.get('quantidadeMinima')"
+            error="required"
+            text="Informe o estoque mínimo.">
+          </app-message-error>
+
+          <app-message-error
+            [control]="formEquipamento.get('quantidadeMinima')"
+            error="min"
+            text="Estoque mínimo deve ser maior que 0.">
+          </app-message-error>
+        </div>
+
+        <div class="p-col-4">
+          <label for="localizacao">Localização</label>
+          <input pInputText
+            type="text"
+            id="localizacao"
+            formControlName="localizacao"
+            class="form-control">
+        </div>
+      </div>
+
+      <div class="p-grid">
+        <div class="p-col-4">
+          <label for="siorg">SIORG</label>
+          <input pInputText
+            type="number"
+            id="siorg"
+            formControlName="siorg"
+            class="form-control">
+
+          <app-message-error
+            [control]="formEquipamento.get('siorg')"
+            error="required"
+            text="Informe o SIORG.">
+          </app-message-error>
+        </div>
+
+        <div class="p-col-4">
+          <label for="valorUltimaCompra">Valor Última Compra</label>
+          <input currencyMask
+            type="text"
+            id="valorUltimaCompra"
+            formControlName="valorUltimaCompra"
+            class="form-control"
+            readonly>
+        </div>
+      </div>
+
+      <div class="p-grid mt-2 mb-1">
+        <div class="p-col-4">
+          <p-checkbox
+            [formControl]="formEquipamento.controls['devolucaoObrigatoria']"
+            binary="true"
+            label="Devolução Obrigatória">
+          </p-checkbox>
+        </div>
+
+        <div class="p-col-4">
+          <p-radioButton
+            name="grupo"
+            formControlName="grupo"
+            [value]="getValueConsumo()"
+            label="Consumo">
+          </p-radioButton>
+
+          <p-radioButton
+            name="grupo"
+            formControlName="grupo"
+            [value]="getValuePermanente()"
+            label="Permanente"
+            class="ml-2">
+          </p-radioButton>
+        </div>
+      </div>
+
+      <div class="separador pt-2 pb-2"></div>
+
+      <div class="pt-2">
+        <button
+          [routerLink]="['/equipamentos']"
+          class="btn btn-warning mr-2">Voltar para lista
+        </button>
+
+        <button
+          type="submit"
+          [disabled]="formEquipamento.invalid"
+          class="btn btn-dark">Salvar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+

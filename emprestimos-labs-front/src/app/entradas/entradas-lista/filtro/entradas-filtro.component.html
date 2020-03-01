@@ -1,0 +1,30 @@
+<form [formGroup]="formFiltro" (submit)="devePesquisarEntradas()">
+  <div class="p-grid pt-2 pb-2">
+    <div class="p-col-4">
+      <label for="data">Data</label>
+      <p-calendar id="data" name="data" formControlName="data"
+        [locale]="pt" [dateFormat]="dateFormat" [inline]="false" [readonlyInput]="false"
+        [showIcon]="true" class="ui-fluid">
+      </p-calendar>
+    </div>
+
+    <div class="p-col-8">
+      <label for="fornecedor">Fornecedor</label>
+      <p-autoComplete id="fornecedor" name="fornecedor" formControlName="fornecedor"
+        [suggestions]="fornecedores" (completeMethod)="loadFornecedores($event)" field="razaoSocial"
+        [minLength]="4" class="ui-fluid">
+
+        <ng-template let-fornecedor pTemplate="item">
+          <div class="ui-helper-clearfix">{{ fornecedor.razaoSocial }} | {{ fornecedor.cnpj | cnpj  }}</div>
+        </ng-template>
+      </p-autoComplete>
+    </div>
+  </div>
+
+  <div class="p-grid pt-2 pb-2">
+    <div class="p-col-12">
+      <button type="submit" class="btn btn-warning mr-2">Pesquisar</button>
+      <button type="button" [routerLink]="['nova']" class="btn btn-dark">Nova</button>
+    </div>
+  </div>
+</form>

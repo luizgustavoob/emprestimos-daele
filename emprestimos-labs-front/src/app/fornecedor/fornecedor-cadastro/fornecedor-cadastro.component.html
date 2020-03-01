@@ -1,0 +1,244 @@
+<div class="container">
+  <div class="mt-2">
+    <div class="p-grid pt-2 pb-2">
+      <div class="p-col-12">
+        <h3 class="font-weight">Cadastro de Fornecedor</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="separador"></div>
+
+  <div class="pt-2 mb-3">
+    <form [formGroup]="formFornecedor" (submit)="save()" autocomplete="off">
+      <div class="p-grid">
+        <div class="p-col-2">
+          <label for="idFornecedor">Código</label>
+          <input pInputText
+            type="number"
+            id="idFornecedor"
+            formControlName="idFornecedor"
+            class="form-control"
+            readonly>
+        </div>
+
+        <div class="p-col-10">
+          <label for="razaoSocial">Razão Social</label>
+          <input pInputText
+            type="text"
+            id="razaoSocial"
+            formControlName="razaoSocial"
+            class="form-control">
+
+          <app-message-error
+            [control]="formFornecedor.controls['razaoSocial']"
+            error="required"
+            text="Informe a razão social.">
+          </app-message-error>
+
+          <app-message-error
+            [control]="formFornecedor.controls['razaoSocial']"
+            error="minlength"
+            text="Informe, no mínimo,
+              {{ formFornecedor.controls['razaoSocial'].errors?.minlength?.requiredLength }} caracteres.">
+          </app-message-error>
+
+          <app-message-error
+            [control]="formFornecedor.controls['razaoSocial']"
+            error="maxlength"
+            text="Informe, no máximo,
+              {{ formFornecedor.controls['razaoSocial'].errors?.maxlength?.requiredLength }} caracteres.">
+          </app-message-error>
+        </div>
+      </div>
+
+      <div class="p-grid">
+        <div class="p-col-6">
+          <label for="cnpj">CNPJ</label>
+          <p-inputMask
+            type="text"
+            id="cnpj"
+            formControlName="cnpj"
+            mask="99.999.999/9999-99"
+            unmask="true"
+            class="ui-fluid">
+          </p-inputMask>
+
+          <app-message-error
+            [control]="formFornecedor.controls['cnpj']"
+            error="required"
+            text="Informe o CNPJ.">
+          </app-message-error>
+        </div>
+
+        <div class="p-col-6">
+          <label for="nomeFantasia">Nome Fantasia</label>
+          <input pInputText
+            type="text"
+            id="nomeFantasia"
+            formControlName="nomeFantasia"
+            class="form-control">
+
+          <app-message-error
+            [control]="formFornecedor.controls['nomeFantasia']"
+            error="maxlength"
+            text="Informe, no máximo,
+              {{ formFornecedor.controls['nomeFantasia'].errors?.maxlength?.requiredLength }} caracteres.">
+          </app-message-error>
+        </div>
+      </div>
+
+      <div formGroupName="endereco">
+        <div class="p-grid">
+          <div class="p-col-6">
+            <label for="logradouro">Endereço</label>
+            <input pInputText
+              type="text"
+              id="logradouro"
+              formControlName="logradouro"
+              class="form-control">
+
+            <app-message-error
+              [control]="formFornecedor.get('endereco.logradouro')"
+              error="required"
+              text="Informe o endereço.">
+            </app-message-error>
+
+            <app-message-error
+              [control]="formFornecedor.get('endereco.logradouro')"
+              error="maxlength"
+              text="Informe, no máximo, {{
+                formFornecedor.get('endereco.logradouro').errors?.maxlength?.requiredLength }} caracteres.">
+            </app-message-error>
+          </div>
+
+          <div class="p-col-2">
+            <label for="numero">Número</label>
+            <input pInputText
+              type="text"
+              id="numero"
+              formControlName="numero"
+              class="form-control">
+
+            <app-message-error
+              [control]="formFornecedor.get('endereco.numero')"
+              error="required"
+              text="Informe o número.">
+            </app-message-error>
+
+            <app-message-error
+              [control]="formFornecedor.get('endereco.numero')"
+              error="maxlength"
+              text="Informe, no máximo,
+                {{ formFornecedor.get('endereco.numero').errors?.maxlength?.requiredLength }} caracteres.">
+            </app-message-error>
+          </div>
+
+          <div class="p-col-4">
+            <label for="complemento">Complemento</label>
+            <input pInputText
+              type="text"
+              id="complemento"
+              formControlName="complemento"
+              class="form-control">
+
+            <app-message-error
+              [control]="formFornecedor.get('endereco.complemento')"
+              error="maxlength"
+              text="Informe, no máximo,
+                {{ formFornecedor.get('endereco.complemento').errors?.maxlength?.requiredLength }} caracteres.">
+            </app-message-error>
+          </div>
+        </div>
+
+        <div class="p-grid">
+          <div class="p-col-4">
+            <label for="bairro">Bairro</label>
+            <input pInputText
+              type="text"
+              id="bairro"
+              formControlName="bairro"
+              class="form-control">
+
+            <app-message-error
+              [control]="formFornecedor.get('endereco.bairro')"
+              error="required"
+              text="Informe o bairro.">
+            </app-message-error>
+
+            <app-message-error
+              [control]="formFornecedor.get('endereco.bairro')"
+              error="maxlength"
+              text="Informe, no máximo,
+                {{ formFornecedor.get('endereco.bairro').errors?.maxlength?.requiredLength }} caracteres.">
+            </app-message-error>
+          </div>
+
+          <div class="p-col-6">
+            <label for="cidade">Cidade</label>
+            <p-autoComplete
+              id="cidade"
+              formControlName="cidade"
+              [suggestions]="cidades"
+              (completeMethod)="findCidades($event)"
+              field="nome"
+              [minLength]="4"
+              class="ui-fluid"
+              required>
+
+              <ng-template let-cidade pTemplate="item">
+                <div class="ui-helper-clearfix">{{ cidade.nome }} - {{ cidade.uf.uf }}</div>
+              </ng-template>
+
+            </p-autoComplete>
+
+            <app-message-error
+              [control]="formFornecedor.get('endereco.cidade')"
+              error="required"
+              text="Informe a cidade.">
+            </app-message-error>
+          </div>
+
+          <div class="p-col-2">
+            <label for="cep">CEP</label>
+            <p-inputMask type="text"
+              id="cep"
+              formControlName="cep"
+              class="ui-fluid"
+              mask="99999-999"
+              unmask="true">
+            </p-inputMask>
+
+            <app-message-error
+              [control]="formFornecedor.get('endereco.cep')"
+              error="required"
+              text="Informe o CEP.">
+            </app-message-error>
+
+            <app-message-error
+              [control]="formFornecedor.get('endereco.cep')"
+              error="maxlength"
+              text="Informe, no máximo,
+                {{ formFornecedor.get('endereco.cep').errors?.maxlength?.requiredLength }} caracteres.">
+            </app-message-error>
+          </div>
+        </div>
+      </div>
+
+      <div class="separador pt-2 pb-2"></div>
+
+      <div class="pt-2">
+        <button
+          [routerLink]="['/fornecedores']"
+          class="btn btn-warning mr-2">Voltar para lista
+        </button>
+
+        <button
+          type="submit"
+          [disabled]="formFornecedor.invalid"
+          class="btn btn-dark">Salvar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

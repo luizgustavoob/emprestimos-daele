@@ -1,0 +1,57 @@
+<p-dialog header="Detalhes do Equipamento"
+  [(visible)]="showDialog" [responsive]="true"
+  showEffect="fade" [closable]="true" [modal]="true"
+  (onShow)="onShowEvent()" (onHide)="onHideEvent()">
+
+  <form [formGroup]="formItem" (submit)="saveItem()">
+    <div class="p-grid">
+      <input pInputText type="hidden" id="idEntradaItem" formControlName="idEntradaItem" readonly>
+
+      <div class="p-col-12">
+        <label for="equipamento">Equipamento</label>
+        <p-autoComplete id="equipamento" formControlName="equipamento"
+          [suggestions]="equipamentos" (completeMethod)="loadEquipamentos($event)"
+          field="nome" [minLength]="1" class="ui-fluid">
+
+          <ng-template let-equipamento pTemplate="item">
+            <div class="ui-helper-clearfix">{{ equipamento.nome }} | {{ equipamento.patrimonio }}</div>
+          </ng-template>
+        </p-autoComplete>
+
+        <app-message-error 
+          [control]="formItem.get('equipamento')" error="required" text="Informe o equipamento.">
+        </app-message-error>
+      </div>
+    </div>
+
+    <div class="p-grid">
+      <div class="p-col-12">
+        <label for="quantidade">Quantidade</label>
+        <input type="number" id="quantidade" formControlName="quantidade" step="1" class="form-control">
+
+        <app-message-error
+          [control]="formItem.get('quantidade')" error="required" text="Informe a quantidade.">
+        </app-message-error>
+      </div>
+    </div>
+
+    <div class="p-grid">
+      <div class="p-col-12">
+        <label for="valorUnitario">Valor Unitário</label>
+        <input currencyMask id="valorUnitario" formControlName="valorUnitario" class="form-control">
+
+        <app-message-error
+          [control]="formItem.get('valorUnitario')" error="required" text="Informe o valor unitário.">
+        </app-message-error>
+      </div>
+    </div>
+
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button pButton type="submit" label="Salvar" icon="fa fa-check" 
+          [disabled]="disabledSaveItem()" class="button-rigth">
+        </button>
+      </div>
+    </p-footer>
+  </form>
+</p-dialog>

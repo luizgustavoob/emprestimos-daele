@@ -1,0 +1,113 @@
+<div class="container">
+  <div class="mt-2">
+    <div class="p-grid pt-2 pb-2">
+      <div class="p-col-12">
+        <h3 class="font-weight">Entrada de Equipamentos</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="separador"></div>
+
+  <div class="pt-2 mb-3">
+    <form [formGroup]="formEntrada" (submit)="save()" autocomplete="off">
+      <div class="p-grid">
+        <div class="p-col-2">
+          <label for="idEntrada">Código</label>
+          <input pInputText type="number" id="idEntrada"
+            formControlName="idEntrada" class="form-control" readonly>
+        </div>
+
+        <div class="p-col-3">
+          <label for="data">Data</label>
+          <p-calendar id="data" formControlName="data" [locale]="pt"
+            [dateFormat]="dateFormat" [inline]="false" [readonlyInput]="false"
+            [showIcon]="true" class="ui-fluid">
+          </p-calendar>
+
+          <app-message-error
+            [control]="formEntrada.get('data')" error="required" text="Informe a data.">
+          </app-message-error>
+        </div>
+
+        <div class="p-col-7">
+          <label for="fornecedor">Fornecedor</label>
+          <p-autoComplete id="fornecedor" formControlName="fornecedor" [suggestions]="fornecedores"
+            field="razaoSocial" (completeMethod)="loadFornecedores($event)" [minLength]="4"
+            class="ui-fluid">
+
+            <ng-template let-fornecedor pTemplate="item">
+              <div class="ui-helper-clearfix">{{ fornecedor.razaoSocial }} | {{ fornecedor.cnpj | cnpj }}</div>
+            </ng-template>
+          </p-autoComplete>
+
+          <app-message-error
+            [control]="formEntrada.get('fornecedor')" error="required" text="Informe o fornecedor.">
+          </app-message-error>
+        </div>
+      </div>
+
+      <div class="p-grid">
+        <div class="p-col-12">
+          <p-table #tableItens 
+            [value]="itens" [responsive]="true" [scrollable]="true"
+            styleClass="mt-2" scrollHeight="400px">
+
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Equipamento</th>
+                <th>Quantidade</th>
+                <th>Valor Unitário</th>
+                <th class="col-acoes"></th>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-item>
+              <tr [pSelectableRow]="item">
+                <td>{{ item.equipamento.nome }}</td>
+                <td>{{ item.quantidade }}</td>
+                <td>{{ item.valorUnitario | currency:'BRL':'symbol':'1.2-2' }}</td>
+                <td class="col-acoes">
+                  <button pButton type="button" pTooltip="Editar" (click)="editItem(item.idEntradaItem)" 
+                    icon="pi pi-pencil">
+                  </button>
+
+                  <button pButton type="button" pTooltip="Excluir" (click)="removeItem(item.idEntradaItem)" 
+                    icon="pi pi-trash" class="ui-button-danger ml-1">
+                  </button>
+                </td>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="summary" >
+              <div class="p-grid">
+                <div class="p-col-12 text-left">
+                  <button pButton pTooltip="Adicionar" type="button"
+                    (click)="addItem()" icon="fa fa-plus" label="Adicionar">
+                  </button>
+                </div>
+              </div>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage" >
+              <tr>
+                <td [attr.colspan]="4">Nenhum equipamento lançado.</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+
+      <div class="separador pt-2 pb-2"></div>
+
+      <div class="pt-2">
+        <button type="button" [routerLink]="['/entradas']" class="btn btn-warning mr-2">Voltar para lista</button>
+        <button type="submit" [disabled]="disabledSave()" class="btn btn-dark">Salvar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<app-entrada-item 
+  [showDialog]="showDialog" [entradaItem]="entradaItem" (onSave)="saveItem($event)" (onHide)="onHideItem($event)">
+</app-entrada-item>

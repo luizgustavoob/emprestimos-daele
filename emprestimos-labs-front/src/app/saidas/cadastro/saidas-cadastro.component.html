@@ -1,0 +1,322 @@
+<div class="container">
+  <div class="mt-2">
+    <div class="p-grid pt-2 pb-2">
+      <div class="p-col-12">
+        <h3 class="font-weight">{{ titulo }}</h3>
+      </div>
+    </div>
+  </div>
+
+  <div class="separador"></div>
+
+  <div class="pt-2 mb-3">
+    <form [formGroup]="saidaForm" (submit)="save()" autocomplete="off">
+      <div class="p-grid">
+        <div class="p-col-2">
+          <label for="idSaida">Código</label>
+          <input pInputText
+            type="number"
+            id="idSaida"
+            name="idSaida"
+            formControlName="idSaida"
+            [(ngModel)]="saida.idSaida"
+            class="form-control">
+        </div>
+
+        <div class="p-col-3">
+          <label for="data">Data</label>
+          <p-calendar
+            id="data"
+            name="data"
+            formControlName="data"
+            [(ngModel)]="saida.data"
+            [disabled]="encerrandoEmprestimo()"
+            [locale]="pt"
+            [dateFormat]="dateFormat"
+            [inline]="false"
+            [readonlyInput]="false"
+            [showIcon]="true"
+            class="ui-fluid">
+          </p-calendar>
+
+          <app-message-error
+            [control]="saidaForm.get('data')"
+            error="required"
+            text="Informe a data.">
+          </app-message-error>
+        </div>
+
+        <div *ngIf="isEmprestimo()" class="p-col-4">
+          <label for="finalidadeSaida">Finalidade</label>
+          <p-dropdown #finalidadeSaida
+            id="finalidadeSaida"
+            name="finalidadeSaida"
+            formControlName="finalidadeSaida"
+            [options]="finalidades"
+            optionLabel="descricao"
+            dataKey="finalidade"
+            (onChange)="setFinalidadeSaida(finalidadeSaida)"
+            class="ui-fluid">
+          </p-dropdown>
+
+          <app-message-error
+            [control]="saidaForm.get('finalidadeSaida')"
+            error="required"
+            text="Informe a finalidade.">
+          </app-message-error>
+        </div>
+
+        <div *ngIf="isEmprestimo()" class="p-col-3">
+          <label for="situacao">Situação</label>
+          <p-dropdown #situacao
+            id="situacao"
+            name="situacao"
+            formControlName="situacao"
+            [options]="situacoes"
+            optionLabel="descricao"
+            dataKey="situacao"
+            (onChange)="setSituacaoSaida(situacao)"
+            class="ui-fluid">
+          </p-dropdown>
+        </div>
+      </div>
+
+      <div class="p-grid">
+        <div class="p-col-12">
+          <p-table #tableItens
+            styleClass="mt-2"
+            [value]="saida.itens"
+            [responsive]="true"
+            [scrollable]="true"
+            scrollHeight="400px">
+
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Equipamento</th>
+                <th>Quantidade</th>
+                <th *ngIf="isEmprestimo()">Quantidade Devolvida</th>
+                <th *ngIf="isEmprestimo()">Data Devolução</th>
+                <th class="col-acoes"></th>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-item>
+              <tr [pSelectableRow]="item">
+                <td>{{ item.equipamento.nome }}</td>
+                <td>{{ item.quantidade }}</td>
+                <td *ngIf="isEmprestimo()">{{ item.quantidadeDevolvida }}</td>
+                <td *ngIf="isEmprestimo()">{{ item.dataDevolucao | date:'dd/MM/y' }}</td>
+                <td class="col-acoes">
+                  <button pButton
+                    type="button"
+                    (click)="editItem(item.equipamento)"
+                    [disabled]="!saidaHabilitada()"
+                    icon="pi pi-pencil"
+                    pTooltip="Editar"
+                    tooltipPosition="top">
+                  </button>
+
+                  <button pButton
+                    type="button"
+                    (click)="removeItem(item.equipamento)"
+                    [disabled]="(!saidaHabilitada() || encerrandoEmprestimo())"
+                    icon="pi pi-trash"
+                    pTooltip="Excluir"
+                    tooltipPosition="top"
+                    class="ui-button-danger ml-1">
+                  </button>
+                </td>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="summary" >
+              <div class="p-grid">
+                <div class="p-col-6 text-left">
+                  <button pButton
+                    type="button"
+                    (click)="addItem()"
+                    pTooltip="Adicionar"
+                    [disabled]="(!saidaHabilitada() || encerrandoEmprestimo())"
+                    icon="fa fa-plus"
+                    label="Adicionar">
+                  </button>
+                </div>
+              </div>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage" >
+              <tr>
+                <td [attr.colspan]="5">Nenhum equipamento lançado.</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+
+      <div class="p-grid">
+        <div class="p-col-12">
+          <label for="observacao">Observação</label>
+          <textarea
+            pInputTextarea
+            id="observacao"
+            name="observacao"
+            class="form-control"
+            formControlName="observacao"
+            [rows]="3"
+            [(ngModel)]="saida.observacao">
+          </textarea>
+
+          <app-message-error
+            [control]="saidaForm.get('observacao')"
+            error="maxlength"
+            text="Informe, no máximo,
+              {{ saidaForm.get('observacao').errors?.maxlength?.requiredLength }} caracteres.">
+          </app-message-error>
+        </div>
+      </div>
+
+      <div class="separador pt-2 pb-2"></div>
+
+      <div class="pt-2">
+        <button type="button"
+          *ngIf="isAdminOrLaboratorista(); else buttonHome"
+          (click)="voltarParaLista()"
+          class="btn btn-warning mr-2">Voltar para lista
+        </button>
+
+        <ng-template #buttonHome>
+          <button type="button"
+            [routerLink]="['']"
+            class="btn btn-warning mr-2">Cancelar
+          </button>
+        </ng-template>
+
+        <button type="submit"
+          *ngIf="saidaHabilitada()"
+          class="btn btn-dark"
+          [disabled]="disabledSave()">Salvar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<p-dialog
+  header="Detalhes do Equipamento"
+  [(visible)]="showDialog"
+  [responsive]="true"
+  showEffect="fade"
+  [closable]="true"
+  [modal]="true"
+  (onHide)="onHideDialog(formItem)">
+
+  <form #formItem="ngForm" (ngSubmit)="saveItem(formItem)">
+    <div class="p-grid">
+      <div class="p-col-12">
+        <label for="equipamento">Equipamento</label>
+        <p-autoComplete
+          #equipamento="ngModel"
+          id="equipamento"
+          name="equipamento"
+          [disabled]="encerrandoEmprestimo()"
+          class="ui-fluid"
+          [suggestions]="equipamentos"
+          (completeMethod)="loadEquipamentos($event)"
+          field="nome"
+          [minLength]="1"
+          [(ngModel)]="itemSaida.equipamento"
+          required>
+
+          <ng-template let-equipamento pTemplate="item">
+            <div class="ui-helper-clearfix">{{ equipamento.nome }} | {{ equipamento.patrimonio }}</div>
+          </ng-template>
+
+        </p-autoComplete>
+
+        <app-message-error
+          [control]="equipamento"
+          error="required"
+          text="Informe o equipamento.">
+        </app-message-error>
+      </div>
+    </div>
+
+    <div class="p-grid">
+      <div class="p-col-12">
+        <label for="quantidade">Quantidade</label>
+        <input type="number"
+          #quantidade="ngModel"
+          id="quantidade"
+          name="quantidade"
+          [disabled]="encerrandoEmprestimo()"
+          step="1"
+          class="form-control"
+          [(ngModel)]="itemSaida.quantidade"
+          required>
+
+        <app-message-error
+          [control]="quantidade"
+          error="required"
+          text="Informe a quantidade.">
+        </app-message-error>
+      </div>
+    </div>
+
+    <div *ngIf="encerrandoEmprestimo()" class="p-grid">
+      <div class="p-col-12">
+        <label for="quantidadeDev">Quantidade Devolvida</label>
+        <input type="number"
+          #quantidadeDevolvida="ngModel"
+          id="quantidadeDev"
+          name="quantidadeDev"
+          step="1"
+          class="form-control"
+          [(ngModel)]="itemSaida.quantidadeDevolvida"
+          required>
+
+        <app-message-error
+          [control]="quantidadeDevolvida"
+          error="required"
+          text="Informe a quantidade devolvida.">
+        </app-message-error>
+      </div>
+    </div>
+
+    <div *ngIf="encerrandoEmprestimo()" class="p-grid">
+      <div class="p-col-12">
+        <label for="dataDev">Data Devolução</label>
+        <p-calendar #dataDevolucao="ngModel"
+          id="dataDev"
+          name="dataDev"
+          [(ngModel)]="itemSaida.dataDevolucao"
+          [locale]="pt"
+          [dateFormat]="dateFormat"
+          [inline]="false"
+          [readonlyInput]="false"
+          [showIcon]="true"
+          appendTo="body"
+          class="ui-fluid"
+          required>
+        </p-calendar>
+
+        <app-message-error
+          [control]="dataDevolucao"
+          error="required"
+          text="Informe a data de devolução.">
+        </app-message-error>
+      </div>
+    </div>
+
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button pButton
+          type="submit"
+          icon="fa fa-check"
+          class="button-rigth"
+          label="Salvar"
+          [disabled]="disabledSaveItem()">
+        </button>
+      </div>
+    </p-footer>
+  </form>
+</p-dialog>

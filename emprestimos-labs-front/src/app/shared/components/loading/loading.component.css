@@ -1,0 +1,7 @@
+.loading {
+  display: inline;
+}
+
+.stopped {
+  display: none;
+}

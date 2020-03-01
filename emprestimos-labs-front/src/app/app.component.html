@@ -1,0 +1,9 @@
+<div class="fixed-top">
+  <app-loading></app-loading>
+</div>
+
+<app-header *ngIf="logado()"></app-header>
+
+<router-outlet>
+  <p-toast baseZIndex="999999"></p-toast>
+</router-outlet>

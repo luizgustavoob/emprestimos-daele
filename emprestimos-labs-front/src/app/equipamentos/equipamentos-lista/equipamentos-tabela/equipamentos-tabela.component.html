@@ -1,0 +1,43 @@
+<p-table #tableEquipamentos
+  [value]="equipamentos.content" [totalRecords]="equipamentos.totalElements"
+  [lazy]="true" [paginator]="true" [rows]="10"  
+  (onLazyLoad)="lazyLoad($event)" [lazyLoadOnInit]="false" [responsive]="true"
+  styleClass="p-2">
+
+  <ng-template pTemplate="header">
+    <tr>
+      <th class="col-codigo">Código</th>
+      <th>Nome</th>
+      <th>Número Patrimônio</th>
+      <th>SIORG</th>
+      <th class="text-center col-acoes">Ações</th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-equipamento>
+    <tr>
+      <td>{{ equipamento.idEquipamento }}</td>
+      <td>{{ equipamento.nome }}</td>
+      <td>{{ equipamento.patrimonio }}</td>
+      <td>{{ equipamento.siorg }}</td>
+      <td class="text-center col-acoes">
+        <button pButton (click)="edit(equipamento.idEquipamento)"
+          pTooltip="Editar" icon="pi pi-pencil">
+        </button>
+
+        <button pButton
+          (click)="remove(equipamento.idEquipamento)"
+          pTooltip="Excluir" icon="pi pi-trash" class="ui-button-danger ml-1">
+        </button>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td [attr.colspan]="5">Nenhum equipamento para ser exibido.</td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-confirmDialog></p-confirmDialog>

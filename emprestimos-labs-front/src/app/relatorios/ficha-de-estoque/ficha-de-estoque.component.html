@@ -1,0 +1,57 @@
+<div class="container">
+  <div class="mt-2">
+    <div class="p-grid pt-2 pb-2">
+      <div class="p-col-12">
+        <h3 class="font-weight">Ficha de Estoque</h3>
+      </div>
+    </div>
+
+    <div class="separador"></div>
+
+    <form [formGroup]="formRelatorio" (submit)="visualizar()">
+      <div class="p-grid pt-2 pb-2">
+        <div class="p-col-4">
+          <label for="data">Data</label>
+          <p-calendar
+            id="data"
+            formControlName="data"
+            [locale]="pt"
+            [dateFormat]="dateFormat"
+            [inline]="false"
+            [readonlyInput]="false"
+            [showIcon]="true"
+            class="ui-fluid">
+          </p-calendar>
+
+          <app-message-error
+            [control]="formRelatorio.get('data')"
+            error="required"
+            text="Informe a data">
+          </app-message-error>
+        </div>
+
+        <div class="p-col-8">
+          <label for="equipamento">Equipamento(s)</label>
+          <p-multiSelect
+            id="equipamento"
+            formControlName="equipamentos"
+            defaultLabel="Selecionar..."
+            [options]="equipamentos"
+            [virtualScroll]="true"
+            [filter]="true"
+            selectedItemsLabel="{0} itens selecionados"
+            class="ui-fluid">
+          </p-multiSelect>
+        </div>
+      </div>
+
+      <div class="pt-2">
+        <button
+          type="submit"
+          [disabled]="formRelatorio.invalid"
+          class="btn btn-dark">Visualizar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

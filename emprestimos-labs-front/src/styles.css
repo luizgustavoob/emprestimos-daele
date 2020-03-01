@@ -1,0 +1,23 @@
+.col-acoes {
+    width: 110px;
+}
+
+.col-codigo {
+    width: 110px;
+}
+
+.col-expand {
+  width: 50px;
+}
+
+.separador {
+  border-bottom: 1px solid lightgray;
+}
+
+.button-rigth {
+  float: right;
+}
+
+.col-acoes-emprestimos {
+  width: 150px;
+}

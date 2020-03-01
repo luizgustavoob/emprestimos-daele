@@ -1,0 +1,66 @@
+<p-table #tableEntradas 
+  [value]="entradas.content" [totalRecords]="entradas.totalElements"
+  [responsive]="true" [paginator]="true" [rows]="10" 
+  [lazy]="true"  (onLazyLoad)="lazyLoad($event)" [lazyLoadOnInit]="false"
+  dataKey="idEntrada">
+
+  <ng-template pTemplate="header">
+    <tr>
+      <th class="col-expand"></th>
+      <th class="col-codigo">Código</th>
+      <th>Data</th>
+      <th>Fornecedor</th>
+      <th>Valor Total</th>
+      <th>Usuário</th>
+      <th class="text-center col-acoes">Ações</th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-entrada let-expanded="expanded">
+    <tr>
+      <td>
+        <a href="" [pRowToggler]="entrada" style="color: black;">
+          <span [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></span>
+        </a>
+      </td>
+      <td> {{ entrada.idEntrada }} </td>
+      <td> {{ entrada.data | date:'dd/MM/y' }} </td>
+      <td> {{ entrada.fornecedor.razaoSocial }} </td>
+      <td> {{ entrada.valorTotal | currency:'BRL':'symbol':'1.2-2' }} </td>
+      <td> {{ entrada.usuario }} </td>
+      <td class="text-center col-acoes">
+        <button pButton (click)="edit(entrada.idEntrada)" pTooltip="Editar" 
+          icon="pi pi-pencil"></button>
+        <button pButton (click)="remove(entrada.idEntrada)" pTooltip="Excluir" 
+          icon="pi pi-trash" class="ui-button-danger ml-1"></button>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="rowexpansion" let-entrada>
+    <tr>
+      <td [attr.colspan]="7">
+        <tr class="p-grid">
+          <th class="p-col-3 text-center">Equipamento</th>
+          <th class="p-col-3 text-center">Quantidade</th>
+          <th class="p-col-3 text-center">Valor Unitário</th>
+          <th class="p-col-3 text-center">Valor Total</th>
+        </tr>
+        <tr *ngFor="let item of entrada.itens" class="p-grid">
+          <td class="p-col-3 text-center">{{ item.equipamento.nome }}</td>
+          <td class="p-col-3 text-center">{{ item.quantidade }}</td>
+          <td class="p-col-3 text-center">{{ item.valorUnitario | currency:'BRL':'symbol':'1.2-2'}}</td>
+          <td class="p-col-3 text-center">{{ item.valorTotal | currency:'BRL':'symbol':'1.2-2'}}</td>
+        </tr>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td [attr.colspan]="7">Nenhuma entrada para ser exibida.</td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-confirmDialog></p-confirmDialog>
