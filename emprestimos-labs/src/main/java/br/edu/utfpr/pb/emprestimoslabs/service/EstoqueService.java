@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.edu.utfpr.pb.emprestimoslabs.data.EstoqueData;
-import br.edu.utfpr.pb.emprestimoslabs.entity.Equipamento;
 import br.edu.utfpr.pb.emprestimoslabs.entity.Estoque;
 import br.edu.utfpr.pb.emprestimoslabs.entity.dto.EquipamentoDto;
 import br.edu.utfpr.pb.emprestimoslabs.entity.dto.FichaEstoqueDto;
@@ -43,6 +42,13 @@ public class EstoqueService extends CrudServiceImpl<Estoque, Long>{
 	protected JpaRepository<Estoque, Long> getData() {
 		return estoqueData;
 	}
+	
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	@Deprecated
+	public Estoque save(Estoque entidade) {
+		return null;
+	}
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
@@ -51,26 +57,15 @@ public class EstoqueService extends CrudServiceImpl<Estoque, Long>{
 		return null;
 	}
 	
-	@Transactional(readOnly = false, propagation = Propagation.MANDATORY)
-	public void atualizarEstoqueEntrada(Equipamento equipamento, LocalDate data, Integer quantidade) {
-		Estoque estoque = estoqueData.findByDataAndEquipamento(data, equipamento).orElse(new Estoque(data, equipamento));
-		estoque.addEntradas(quantidade);
-		estoqueData.save(estoque);
-	}
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	@Deprecated
+	public void delete(Estoque entidade) { }
 	
-	@Transactional(readOnly = false, propagation = Propagation.MANDATORY)
-	public void atualizarEstoqueSaida(Equipamento equipamento, LocalDate data, Integer quantidade) {
-		Estoque estoque = estoqueData.findByDataAndEquipamento(data, equipamento).orElse(new Estoque(data, equipamento));
-		estoque.addSaidas(quantidade);
-		estoqueData.save(estoque);
-	}
-	
-	@Transactional(readOnly = false, propagation = Propagation.MANDATORY)
-	public void atualizarEstoqueReservas(Equipamento equipamento, LocalDate data, Integer quantidade) {
-		Estoque estoque = estoqueData.findByDataAndEquipamento(data, equipamento).orElse(new Estoque(data, equipamento));
-		estoque.addReservas(quantidade);
-		estoqueData.save(estoque);
-	}
+	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	@Deprecated
+	public void delete(Long id) { }
 	
 	@Transactional(readOnly = true, propagation = Propagation.REQUIRED)
 	public List<EquipamentoDto> findEquipamentosComEstoqueEsgotando() {

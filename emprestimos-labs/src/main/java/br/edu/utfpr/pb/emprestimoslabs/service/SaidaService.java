@@ -1,6 +1,7 @@
 package br.edu.utfpr.pb.emprestimoslabs.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,12 +25,10 @@ import org.springframework.transaction.annotation.Transactional;
 import br.edu.utfpr.pb.emprestimoslabs.data.SaidaData;
 import br.edu.utfpr.pb.emprestimoslabs.data.SaidaItemData;
 import br.edu.utfpr.pb.emprestimoslabs.email.EmailService;
-import br.edu.utfpr.pb.emprestimoslabs.entity.Equipamento;
 import br.edu.utfpr.pb.emprestimoslabs.entity.Saida;
 import br.edu.utfpr.pb.emprestimoslabs.entity.SaidaItem;
 import br.edu.utfpr.pb.emprestimoslabs.entity.dto.SaidaDto;
 import br.edu.utfpr.pb.emprestimoslabs.entity.enums.SituacaoSaida;
-import br.edu.utfpr.pb.emprestimoslabs.entity.enums.TipoSaida;
 import br.edu.utfpr.pb.emprestimoslabs.entity.filter.SaidaFiltro;
 import br.edu.utfpr.pb.emprestimoslabs.security.util.UsuarioAutenticado;
 import br.edu.utfpr.pb.emprestimoslabs.service.generic.CrudServiceImpl;
@@ -41,11 +40,7 @@ public class SaidaService extends CrudServiceImpl<Saida, Long> {
 	@Autowired
 	private SaidaData saidaData;
 	@Autowired
-	private SaidaItemData saidaItemData;
-	@Autowired
-	private EstoqueService estoqueService;
-	@Autowired
-	private EquipamentoService itemService;
+	private SaidaItemData saidaItemData;	
 	@Autowired
 	private EmailService emailService;
 	@PersistenceContext
@@ -57,65 +52,46 @@ public class SaidaService extends CrudServiceImpl<Saida, Long> {
 	protected JpaRepository<Saida, Long> getData() {
 		return saidaData;
 	}
-	
-	@Transactional(readOnly = false, propagation = Propagation.MANDATORY)
-	private void atualizarEstoque(Saida saida, boolean isUpdate) {
-		for (SaidaItem itemSaida : saida.getItens()) {
-			Equipamento item = itemService.findById(itemSaida.getIdSaidaItem().getEquipamento().getIdEquipamento());
-			switch (saida.getSituacao()) {
-				case ENCERRADA:
-					if (saida.getTipoSaida() == TipoSaida.BAIXA) {
-						estoqueService.atualizarEstoqueSaida( item, saida.getData(),
-								itemSaida.getQuantidade() * (isUpdate ? -1 : 1) );
-					} else {
-						estoqueService.atualizarEstoqueEntrada( item, itemSaida.getDataDevolucao(),
-								itemSaida.getQuantidadeDevolvida() * (isUpdate ? -1 : 1) );
-					}
-					break;
-				case APROVADA:
-					estoqueService.atualizarEstoqueReservas( item, saida.getData(),
-							itemSaida.getQuantidade() * (isUpdate ? -1 : 1) );
-					break;
-					
-				default:
-					break;
-			}
-		}
-	}
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public Saida update(Long id, Saida saida) {
 		Saida saidaAtual = saidaData.findById(id).orElseThrow(() -> new EmptyResultDataAccessException(1));
-		
-		Saida saidaAntiga = new Saida();
-		BeanUtils.copyProperties(saidaAtual, saidaAntiga, "idSaida");
-		
-		if (!saida.getSituacao().equals(saidaAntiga.getSituacao())) {
-			atualizarEstoque(saidaAntiga, true);
-			Saida saidaAjuste = new Saida();
-			BeanUtils.copyProperties(saida, saidaAjuste, "idSaida", "situacao");
-			saidaAjuste.setSituacao(saidaAntiga.getSituacao());
-			atualizarEstoque(saidaAjuste, false);
-		} else {
-			atualizarEstoque(saidaAntiga, true);
-		}
+		List<SaidaItem> itensAntesDoUpdate = new ArrayList<SaidaItem>();
+		saidaAtual.getItens().forEach(si -> {
+			SaidaItem item = new SaidaItem();
+			item.setIdSaidaItem(si.getIdSaidaItem());
+			item.setQuantidade(si.getQuantidade());
+			item.setDataDevolucao(si.getDataDevolucao());
+			item.setQuantidadeDevolvida(si.getQuantidadeDevolvida());
+			itensAntesDoUpdate.add(item);
+		});
 		
 		BeanUtils.copyProperties(saida, saidaAtual, "idSaida", "itens");
+		saidaAtual.getItens().clear();		
+		
 		saidaAtual = saidaData.save(saidaAtual);
-		saidaAtual.getItens().clear();
-		for (SaidaItem item: saida.getItens()) {
-			SaidaItem itemSaida = new SaidaItem();
-			itemSaida.getIdSaidaItem().setSaida(saidaAtual);
-			itemSaida.getIdSaidaItem().setEquipamento(item.getIdSaidaItem().getEquipamento());
-			itemSaida.setQuantidade(item.getQuantidade());
-			itemSaida.setQuantidadeDevolvida(item.getQuantidadeDevolvida());
-			itemSaida.setDataDevolucao(item.getDataDevolucao());
-			saidaAtual.getItens().add(itemSaida);
+		
+		for (SaidaItem saidaItem : saida.getItens()) {
+			SaidaItem novoItem = new SaidaItem();
+			novoItem.setIdSaidaItem(saidaItem.getIdSaidaItem());
+			novoItem.setQuantidade(saidaItem.getQuantidade());
+			novoItem.setDataDevolucao(saidaItem.getDataDevolucao());
+			novoItem.setQuantidadeDevolvida(saidaItem.getQuantidadeDevolvida());
+			saidaAtual.getItens().add(novoItem);
 		}
+		
+		for (SaidaItem item : saidaAtual.getItens()) {
+			item.getIdSaidaItem().setSaida(saidaAtual);
+		}
+		
+		for (SaidaItem itemAntesDoUpdate : itensAntesDoUpdate) {
+			if (!saidaAtual.getItens().contains(itemAntesDoUpdate)) {
+				saidaItemData.delete(itemAntesDoUpdate);
+			}
+		}
+		
 		saidaItemData.saveAll(saidaAtual.getItens());
-			
-		atualizarEstoque(saidaAtual, false);
 		
 		return saidaAtual;
 	}
@@ -125,11 +101,13 @@ public class SaidaService extends CrudServiceImpl<Saida, Long> {
 	public Saida save(Saida saida) {
 		saida.setUsuario(UsuarioAutenticado.get());
 		saida = saidaData.save(saida);
+		
 		for (SaidaItem item : saida.getItens()) {
 			item.getIdSaidaItem().setSaida(saida);
 		}
+		
 		saidaItemData.saveAll(saida.getItens());
-		atualizarEstoque(saida, false);
+
 		return saida;
 	}
 	
@@ -146,8 +124,9 @@ public class SaidaService extends CrudServiceImpl<Saida, Long> {
 		for (SaidaItem item : saida.getItens()) {
 			saidaItemData.delete(item);
 		}
+		
 		super.delete(saida);
-		atualizarEstoque(saida, true);
+		
 		if (!saida.getSituacao().equals(SituacaoSaida.REPROVADA)) {
 			message.convertAndSend(Queue.ATUALIZAR_ESTOQUE, "update");
 		}
@@ -166,7 +145,6 @@ public class SaidaService extends CrudServiceImpl<Saida, Long> {
 		}
 		
 		saida = saidaData.save(saida);
-		atualizarEstoque(saida, false);
 		
 		message.convertAndSend(String.format(Queue.NOTIFICA_USUARIO, saida.getUsuario().getEmail()), "emprestimo");
 		message.convertAndSend(Queue.ATUALIZAR_ESTOQUE, "update");

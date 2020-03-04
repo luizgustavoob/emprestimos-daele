@@ -1,5 +1,6 @@
 package br.edu.utfpr.pb.emprestimoslabs.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,8 +35,6 @@ public class EntradaService extends CrudServiceImpl<Entrada, Long>{
 	private EntradaData entradaData;
 	@Autowired
 	private EntradaItemData entradaItemData;
-	@Autowired
-	private EstoqueService estoqueService;
 	@PersistenceContext
 	private EntityManager manager;
 	
@@ -46,36 +45,45 @@ public class EntradaService extends CrudServiceImpl<Entrada, Long>{
 
 	@Override
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
-	public Entrada update(Long id, Entrada entrada) {
+	public Entrada update(Long id, Entrada entrada) {		
 		Entrada entradaAtual = entradaData.findById(id).orElseThrow(() -> new EmptyResultDataAccessException(1));
+		List<EntradaItem> itensAntesDoUpdate = new ArrayList<EntradaItem>();
+		entradaAtual.getItens().forEach(ei -> {
+			EntradaItem item = new EntradaItem();
+			item.setIdEntradaItem(ei.getIdEntradaItem());
+			item.setEquipamento(ei.getEquipamento());
+			item.setQuantidade(ei.getQuantidade());
+			item.setValorUnitario(ei.getValorUnitario());
+			itensAntesDoUpdate.add(item);
+		});
 		
-		Entrada entradaAntiga = new Entrada();
-		BeanUtils.copyProperties(entradaAtual, entradaAntiga, "idEntrada");
-		for (EntradaItem item : entradaAntiga.getItens()) {
-			estoqueService.atualizarEstoqueEntrada(item.getEquipamento(),
-					entradaAntiga.getData(), item.getQuantidade() * -1);
-		}
-						
 		BeanUtils.copyProperties(entrada, entradaAtual, "idEntrada", "itens");
 		entradaAtual.setUsuario(UsuarioAutenticado.get());
+		entradaAtual.getItens().clear();
+		
 		entradaAtual = entradaData.save(entradaAtual);
 		
-		entradaAtual.getItens().clear();
-		for (EntradaItem item: entrada.getItens()) {
-			EntradaItem itemEntrada = new EntradaItem();
-			itemEntrada.setIdEntradaItem(item.getIdEntradaItem());
-			itemEntrada.setEquipamento(item.getEquipamento());
-			itemEntrada.setQuantidade(item.getQuantidade());
-			itemEntrada.setValorUnitario(item.getValorUnitario());
-			entradaAtual.getItens().add(itemEntrada);
+		for (EntradaItem entradaItem : entrada.getItens()) {
+			EntradaItem novoItem = new EntradaItem();
+			novoItem.setIdEntradaItem(entradaItem.getIdEntradaItem());
+			novoItem.setEquipamento(entradaItem.getEquipamento());
+			novoItem.setQuantidade(entradaItem.getQuantidade());
+			novoItem.setValorUnitario(entradaItem.getValorUnitario());
+			entradaAtual.getItens().add(novoItem);			
 		}
-		
-		entradaItemData.saveAll(entradaAtual.getItens());
 		
 		for (EntradaItem item : entradaAtual.getItens()) {
-			estoqueService.atualizarEstoqueEntrada(item.getEquipamento(),
-					entradaAntiga.getData(), item.getQuantidade());
+			item.getIdEntradaItem().setEntrada(entradaAtual);
 		}
+		
+		
+		for (EntradaItem itemAntesDoUpdate : itensAntesDoUpdate) {
+			if (!entradaAtual.getItens().contains(itemAntesDoUpdate)) {
+				entradaItemData.delete(itemAntesDoUpdate);
+			}
+		}
+		
+		entradaItemData.saveAll(entradaAtual.getItens());		
 		
 		return entradaAtual;
 	}
@@ -85,13 +93,12 @@ public class EntradaService extends CrudServiceImpl<Entrada, Long>{
 	public Entrada save(Entrada entrada) {
 		entrada.setUsuario(UsuarioAutenticado.get());
 		entrada = entradaData.save(entrada);
+		
 		for (EntradaItem item : entrada.getItens()) {
 			item.getIdEntradaItem().setEntrada(entrada);
 		}
+		
 		entradaItemData.saveAll(entrada.getItens());
-		for (EntradaItem item : entrada.getItens()) {
-			estoqueService.atualizarEstoqueEntrada(item.getEquipamento(), entrada.getData(), item.getQuantidade());
-		}
 		return entrada;
 	}
 	
@@ -100,7 +107,6 @@ public class EntradaService extends CrudServiceImpl<Entrada, Long>{
 	public void delete(Entrada entrada) {
 		for (EntradaItem item : entrada.getItens()) {
 			entradaItemData.delete(item);
-			estoqueService.atualizarEstoqueEntrada(item.getEquipamento(), entrada.getData(), item.getQuantidade());
 		}
 		super.delete(entrada);
 	}
