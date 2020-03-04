@@ -17,6 +17,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
@@ -27,9 +28,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.edu.utfpr.pb.emprestimoslabs.entity.enums.Permissao;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "USUARIO")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = {"idUsuario"})
 public class Usuario implements Serializable, EntidadeBD, UserDetails {
 
 	private static final long serialVersionUID = 1L;
@@ -41,19 +50,16 @@ public class Usuario implements Serializable, EntidadeBD, UserDetails {
 	private Long idUsuario;
 
 	@Column(nullable = false, unique = true, length = 50)
-	@NotNull
-	@Length(max = 50)
+	@NotNull @NotBlank @Length(max = 50)
 	@Email
 	private String email;
 
 	@Column(nullable = false, length = 256)
-	@NotNull
-	@Length(max = 256)
+	@NotNull @NotBlank @Length(max = 256)
 	private String senha;
 
 	@Column(length = 100, nullable = false)
-	@NotNull
-	@Length(min = 1, max = 100)
+	@NotNull @NotBlank @Length(min = 1, max = 100)
 	private String nome;
 
 	private boolean ativo;
@@ -70,22 +76,6 @@ public class Usuario implements Serializable, EntidadeBD, UserDetails {
 
 	@Column(name = "nrora", unique = true)
 	private Integer nrora;
-
-	public Usuario() {
-	}
-
-	public Usuario(Long idUsuario, String email, String senha, String nome, boolean ativo, Permissao permissao,
-			LocalDate dataInclusao, LocalDate dataInativacao, Integer nrora) {
-		this.idUsuario = idUsuario;
-		this.email = email;
-		this.senha = senha;
-		this.nome = nome;
-		this.ativo = ativo;
-		this.permissao = permissao;
-		this.dataInclusao = dataInclusao;
-		this.dataInativacao = dataInativacao;
-		this.nrora = nrora;
-	}
 
 	@PrePersist
 	private void prePersist() {
@@ -139,102 +129,5 @@ public class Usuario implements Serializable, EntidadeBD, UserDetails {
 	@JsonIgnore
 	public boolean isEnabled() {
 		return this.ativo;
-	}
-
-	public Long getIdUsuario() {
-		return idUsuario;
-	}
-
-	public void setIdUsuario(Long idUsuario) {
-		this.idUsuario = idUsuario;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getSenha() {
-		return senha;
-	}
-
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public boolean isAtivo() {
-		return ativo;
-	}
-
-	public void setAtivo(boolean ativo) {
-		this.ativo = ativo;
-	}
-
-	public Permissao getPermissao() {
-		return permissao;
-	}
-
-	public void setPermissao(Permissao permissao) {
-		this.permissao = permissao;
-	}
-
-	public LocalDate getDataInclusao() {
-		return dataInclusao;
-	}
-
-	public void setDataInclusao(LocalDate dataInclusao) {
-		this.dataInclusao = dataInclusao;
-	}
-
-	public LocalDate getDataInativacao() {
-		return dataInativacao;
-	}
-
-	public void setDataInativacao(LocalDate dataInativacao) {
-		this.dataInativacao = dataInativacao;
-	}
-
-	public Integer getNrora() {
-		return nrora;
-	}
-
-	public void setNrora(Integer nrora) {
-		this.nrora = nrora;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((idUsuario == null) ? 0 : idUsuario.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Usuario other = (Usuario) obj;
-		if (idUsuario == null) {
-			if (other.idUsuario != null)
-				return false;
-		} else if (!idUsuario.equals(other.idUsuario))
-			return false;
-		return true;
 	}
 }

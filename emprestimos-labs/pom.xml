@@ -117,6 +117,11 @@
 			<artifactId>jasperreports-fonts</artifactId>
 			<version>6.10.0</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

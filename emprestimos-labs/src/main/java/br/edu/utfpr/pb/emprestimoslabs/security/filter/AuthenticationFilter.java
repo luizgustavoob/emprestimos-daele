@@ -21,6 +21,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import br.edu.utfpr.pb.emprestimoslabs.controller.exception.InactiveUserException;
 import br.edu.utfpr.pb.emprestimoslabs.entity.Usuario;
 import br.edu.utfpr.pb.emprestimoslabs.security.util.JwtUtil;
+import lombok.Getter;
+import lombok.Setter;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -57,26 +59,13 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
 	public static class Credenciais {
 
+		@Getter @Setter
 		private String username;
+		@Getter @Setter
 		private String password;
 		
 		public Credenciais() {}
 
-		public String getUsername() {
-			return username;
-		}
-
-		public void setUsername(String username) {
-			this.username = username;
-		}
-
-		public String getPassword() {
-			return password;
-		}
-
-		public void setPassword(String password) {
-			this.password = password;
-		}
 	}
 	
 	private class JWTAuthenticationFailureHandler implements AuthenticationFailureHandler {

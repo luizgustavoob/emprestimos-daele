@@ -12,7 +12,11 @@ import br.edu.utfpr.pb.emprestimoslabs.entity.Entrada;
 import br.edu.utfpr.pb.emprestimoslabs.entity.Fornecedor;
 import br.edu.utfpr.pb.emprestimoslabs.service.EquipamentoService;
 import br.edu.utfpr.pb.emprestimoslabs.service.FornecedorService;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
+@Data
+@AllArgsConstructor
 public class EntradaDto {
 
 	private Long idEntrada;
@@ -35,46 +39,6 @@ public class EntradaDto {
 		this.usuario = entrada.getUsuario().getNome();
 		this.itens = entrada.getItens().stream().map(itemEntrada -> new EntradaItemDto(itemEntrada))
 				.collect(Collectors.toList());
-	}
-
-	public Long getIdEntrada() {
-		return idEntrada;
-	}
-
-	public void setIdEntrada(Long idEntrada) {
-		this.idEntrada = idEntrada;
-	}
-
-	public LocalDate getData() {
-		return data;
-	}
-
-	public void setData(LocalDate data) {
-		this.data = data;
-	}
-
-	public Fornecedor getFornecedor() {
-		return fornecedor;
-	}
-
-	public void setFornecedor(Fornecedor fornecedor) {
-		this.fornecedor = fornecedor;
-	}
-
-	public String getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
-	}
-
-	public List<EntradaItemDto> getItens() {
-		return itens;
-	}
-
-	public void setItens(List<EntradaItemDto> itens) {
-		this.itens = itens;
 	}
 
 	public Entrada toEntity(FornecedorService fornecedorService, EquipamentoService equipamentoService) {

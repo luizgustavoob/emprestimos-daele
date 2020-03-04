@@ -20,9 +20,17 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.edu.utfpr.pb.emprestimoslabs.entity.dto.FichaEstoqueDto;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "ESTOQUE")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = {"idEstoque"})
 @NamedNativeQuery(name = "Estoque.relatorioFichaEstoque", 
 	resultSetMapping = "fichaEstoque", 
 	query = " select :data as data, e.idequipamento, e.nome, e.patrimonio, "
@@ -61,14 +69,18 @@ public class Estoque implements Serializable, EntidadeBD {
 
 	private Integer saidas;
 
-	private Integer reservas;
+	private Integer emprestimos;
+	
+	@Column(name = "retornoemprestimos")
+	private Integer retornoEmprestimos;
 
 	public Estoque(LocalDate data, Equipamento item) {
 		this.data = data;
 		this.equipamento = item;
 		this.entradas = 0;
 		this.saidas = 0;
-		this.reservas = 0;
+		this.saidas = 0;
+		this.setRetornoEmprestimos(0);
 	}
 
 	@Override
@@ -77,91 +89,4 @@ public class Estoque implements Serializable, EntidadeBD {
 		return idEstoque;
 	}
 
-	public Estoque() {
-	}
-
-	public Long getIdEstoque() {
-		return idEstoque;
-	}
-
-	public void setIdEstoque(Long idEstoque) {
-		this.idEstoque = idEstoque;
-	}
-
-	public Equipamento getEquipamento() {
-		return equipamento;
-	}
-
-	public void setEquipamento(Equipamento equipamento) {
-		this.equipamento = equipamento;
-	}
-
-	public LocalDate getData() {
-		return data;
-	}
-
-	public void setData(LocalDate data) {
-		this.data = data;
-	}
-
-	public Integer getEntradas() {
-		return entradas;
-	}
-
-	public void setEntradas(Integer entradas) {
-		this.entradas = entradas;
-	}
-
-	public Integer getSaidas() {
-		return saidas;
-	}
-
-	public void setSaidas(Integer saidas) {
-		this.saidas = saidas;
-	}
-
-	public Integer getReservas() {
-		return reservas;
-	}
-
-	public void setReservas(Integer reservas) {
-		this.reservas = reservas;
-	}
-
-	public void addEntradas(Integer entradas) {
-		this.entradas += entradas;
-	}
-
-	public void addSaidas(Integer saidas) {
-		this.saidas += saidas;
-	}
-
-	public void addReservas(Integer reservas) {
-		this.reservas += reservas;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((idEstoque == null) ? 0 : idEstoque.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Estoque other = (Estoque) obj;
-		if (idEstoque == null) {
-			if (other.idEstoque != null)
-				return false;
-		} else if (!idEstoque.equals(other.idEstoque))
-			return false;
-		return true;
-	}
 }

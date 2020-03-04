@@ -19,8 +19,17 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 @Entity
 @Table(name = "ENTRADA")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = {"idEntrada"})
 public class Entrada implements Serializable, EntidadeBD {
 
 	private static final long serialVersionUID = 1L;
@@ -51,80 +60,5 @@ public class Entrada implements Serializable, EntidadeBD {
 	@JsonIgnore
 	public Long getId() {
 		return idEntrada;
-	}
-
-	public Entrada() {}
-
-	public Entrada(Long idEntrada, LocalDate data, Fornecedor fornecedor, Usuario usuario, List<EntradaItem> itens) {
-		this.idEntrada = idEntrada;
-		this.data = data;
-		this.fornecedor = fornecedor;
-		this.usuario = usuario;
-		this.itens = itens;
-	}
-
-	public Long getIdEntrada() {
-		return idEntrada;
-	}
-
-	public void setIdEntrada(Long idEntrada) {
-		this.idEntrada = idEntrada;
-	}
-
-	public LocalDate getData() {
-		return data;
-	}
-
-	public void setData(LocalDate data) {
-		this.data = data;
-	}
-
-	public Fornecedor getFornecedor() {
-		return fornecedor;
-	}
-
-	public void setFornecedor(Fornecedor fornecedor) {
-		this.fornecedor = fornecedor;
-	}
-
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
-
-	public List<EntradaItem> getItens() {
-		return itens;
-	}
-
-	public void setItens(List<EntradaItem> itens) {
-		this.itens = itens;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((idEntrada == null) ? 0 : idEntrada.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Entrada other = (Entrada) obj;
-		if (idEntrada == null) {
-			if (other.idEntrada != null)
-				return false;
-		} else if (!idEntrada.equals(other.idEntrada))
-			return false;
-		return true;
 	}
 }

@@ -1,30 +1,19 @@
 package br.edu.utfpr.pb.emprestimoslabs.entity.enums;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public enum TipoSaida {
 
 	EMPRESTIMO(1, "EMPRESTIMO"), BAIXA(2, "BAIXA");
 
+	@Getter @Setter
 	private Integer idTipoSaida;
+	@Getter @Setter
 	private String descricao;
 
 	private TipoSaida(Integer idTipoSaida, String descricao) {
 		this.idTipoSaida = idTipoSaida;
-		this.descricao = descricao;
-	}
-
-	public Integer getIdTipoSaida() {
-		return idTipoSaida;
-	}
-
-	public void setIdTipoSaida(Integer idTipoSaida) {
-		this.idTipoSaida = idTipoSaida;
-	}
-
-	public String getDescricao() {
-		return descricao;
-	}
-
-	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
 

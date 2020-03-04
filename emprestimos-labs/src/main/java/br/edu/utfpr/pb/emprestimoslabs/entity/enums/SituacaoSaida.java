@@ -1,30 +1,19 @@
 package br.edu.utfpr.pb.emprestimoslabs.entity.enums;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public enum SituacaoSaida {
 
 	PENDENTE(1, "PENDENTE"), APROVADA(2, "APROVADA"), ENCERRADA(3, "ENCERRADA"), REPROVADA(4, "REPROVADA");
 
+	@Getter @Setter
 	private Integer idSituacaoSaida;
+	@Getter @Setter
 	private String descricao;
 
 	private SituacaoSaida(Integer idSituacaoSaida, String descricao) {
 		this.idSituacaoSaida = idSituacaoSaida;
-		this.descricao = descricao;
-	}
-
-	public Integer getIdSituacaoSaida() {
-		return idSituacaoSaida;
-	}
-
-	public void setIdSituacaoSaida(Integer idSituacaoSaida) {
-		this.idSituacaoSaida = idSituacaoSaida;
-	}
-
-	public String getDescricao() {
-		return descricao;
-	}
-
-	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
 

@@ -14,7 +14,11 @@ import br.edu.utfpr.pb.emprestimoslabs.entity.enums.FinalidadeSaida;
 import br.edu.utfpr.pb.emprestimoslabs.entity.enums.SituacaoSaida;
 import br.edu.utfpr.pb.emprestimoslabs.entity.enums.TipoSaida;
 import br.edu.utfpr.pb.emprestimoslabs.service.EquipamentoService;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
+@Data
+@AllArgsConstructor
 public class SaidaDto {
 
 	private Long idSaida;
@@ -45,70 +49,6 @@ public class SaidaDto {
 		this.itens = saida.getItens().stream().map(item -> new SaidaItemDto(item)).collect(Collectors.toList());
 	}
 	
-	public Long getIdSaida() {
-		return idSaida;
-	}
-
-	public void setIdSaida(Long idSaida) {
-		this.idSaida = idSaida;
-	}
-
-	public LocalDate getData() {
-		return data;
-	}
-
-	public void setData(LocalDate data) {
-		this.data = data;
-	}
-
-	public TipoSaida getTipoSaida() {
-		return tipoSaida;
-	}
-
-	public void setTipoSaida(TipoSaida tipoSaida) {
-		this.tipoSaida = tipoSaida;
-	}
-
-	public FinalidadeSaida getFinalidadeSaida() {
-		return finalidadeSaida;
-	}
-
-	public void setFinalidadeSaida(FinalidadeSaida finalidadeSaida) {
-		this.finalidadeSaida = finalidadeSaida;
-	}
-
-	public SituacaoSaida getSituacao() {
-		return situacao;
-	}
-
-	public void setSituacao(SituacaoSaida situacao) {
-		this.situacao = situacao;
-	}
-
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
-
-	public String getObservacao() {
-		return observacao;
-	}
-
-	public void setObservacao(String observacao) {
-		this.observacao = observacao;
-	}
-
-	public List<SaidaItemDto> getItens() {
-		return itens;
-	}
-
-	public void setItens(List<SaidaItemDto> itens) {
-		this.itens = itens;
-	}
-
 	public Saida toEntity(EquipamentoService equipamentoService) {
 		Saida saida = new Saida();
 		if (idSaida > 0) {

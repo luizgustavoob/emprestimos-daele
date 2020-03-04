@@ -1,30 +1,19 @@
 package br.edu.utfpr.pb.emprestimoslabs.entity.enums;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public enum FinalidadeSaida {
 
 	PROJETO(1, "PROJETO"), AULA_PRATICA(2, "AULA_PRATICA");
-
+	
+	@Getter @Setter
 	private Integer idFinalidadeSaida;
+	@Getter @Setter
 	private String descricao;
 
 	private FinalidadeSaida(Integer idFinalidadeSaida, String descricao) {
 		this.idFinalidadeSaida = idFinalidadeSaida;
-		this.descricao = descricao;
-	}
-
-	public Integer getIdFinalidadeSaida() {
-		return idFinalidadeSaida;
-	}
-
-	public void setIdFinalidadeSaida(Integer idFinalidadeSaida) {
-		this.idFinalidadeSaida = idFinalidadeSaida;
-	}
-
-	public String getDescricao() {
-		return descricao;
-	}
-
-	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
 
