@@ -68,7 +68,7 @@ export class SaidaService extends CrudService<Saida, number> {
     );
   }
 
-  getEmprestimosDoAluno(page: number, size: number): Observable<Page<Saida>> {
+  getEmprestimosDoUsuario(page: number, size: number): Observable<Page<Saida>> {
     let params = new HttpParams();
     params = params.set('page', page.toString());
     params = params.set('size', size.toString());

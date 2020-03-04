@@ -2,10 +2,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { ConfirmationService } from 'primeng/api';
-import { SaidaService } from './../../../saidas/service/saida.service';
-import { Saida, SituacaoSaida } from './../../../saidas/model/saida';
+import { SaidaService } from '../../../../saidas/service/saida.service';
+import { Saida, SituacaoSaida } from '../../../../saidas/model/saida';
 import { MyWebSocket } from '../../../websocket/websocket.service';
-import { Queue } from './../../../websocket/queue';
+import { Queue } from '../../../websocket/queue';
 
 @Component({
   selector: 'app-emprestimos-pendentes',
@@ -30,7 +30,7 @@ export class EmprestimosPendentesComponent implements OnInit, OnDestroy {
     }.bind(this));
   }
 
-  getEmprestimosPendentes() {
+  private getEmprestimosPendentes() {
     return this.saidaService.getEmprestimosPendentes();
   }
 

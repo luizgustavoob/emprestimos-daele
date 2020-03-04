@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { UsuariosComponent } from './usuarios.component';
-import { GenericGuardService } from '../guard/generic-guard.service';
+import { GenericGuardService } from '../core/guard/generic-guard.service';
 import { environment } from './../../environments/environment.prod';
 
 const routes: Routes = [

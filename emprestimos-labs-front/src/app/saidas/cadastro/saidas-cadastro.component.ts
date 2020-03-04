@@ -228,7 +228,8 @@ export class SaidasCadastroComponent extends CalendarBase implements OnInit {
   }
 
   disabledSave(): boolean {
-    return (this.saidaForm.invalid || this.saida.itens.length === 0);
+    return (this.saidaForm.invalid || this.saida.itens.length === 0 || 
+      (this.encerrandoEmprestimo() && this.saida.itens.filter(item => !item.dataDevolucao || !item.quantidadeDevolvida).length > 0));
   }
 
   disabledSaveItem(): boolean {

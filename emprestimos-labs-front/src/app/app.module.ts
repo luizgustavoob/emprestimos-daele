@@ -8,11 +8,11 @@ import localePt from '@angular/common/locales/pt';
 import { AppComponent } from './app.component';
 
 import { AppRoutingModule } from './app.routing.module';
-import { HeaderModule } from './header/header.module';
+import { CoreModule } from './core/core.module';
 import { LoadingModule } from './shared/components/loading/loading.module';
 import { ToastModule } from 'primeng/toast';
 
-import { AuthInterceptorService } from './auth/auth.interceptor';
+import { AuthInterceptorService } from './core/auth/auth.interceptor';
 import { ErrorHandlerService } from './shared/services/error-handler.service';
 
 import { MessageService } from 'primeng/components/common/messageservice';
@@ -26,7 +26,7 @@ registerLocaleData(localePt);
     BrowserAnimationsModule,
     CommonModule,
     ToastModule,
-    HeaderModule,
+    CoreModule,
     LoadingModule,
     AppRoutingModule
   ],

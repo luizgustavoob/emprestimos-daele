@@ -2,10 +2,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { ConfirmationService } from 'primeng/api';
-import { UsuarioService } from '../../../usuarios/service/usuario.service';
-import { Usuario } from '../../../usuarios/model/usuario';
+import { UsuarioService } from '../../../../usuarios/service/usuario.service';
+import { Usuario } from '../../../../usuarios/model/usuario';
 import { MyWebSocket } from '../../../websocket/websocket.service';
-import { Queue } from './../../../websocket/queue';
+import { Queue } from '../../../websocket/queue';
 
 @Component({
   selector: 'app-usuarios-pendentes',
@@ -29,7 +29,7 @@ export class UsuariosPendentesComponent implements OnInit, OnDestroy {
     }.bind(this));
   }
 
-  getUsuariosPendentes() {
+  private getUsuariosPendentes() {
     return this.usuarioService.getUsuariosPendentes();
   }
 

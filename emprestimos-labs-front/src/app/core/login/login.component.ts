@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Usuario } from '../usuarios/model/usuario';
-import { UsuarioService } from '../usuarios/service/usuario.service';
+import { Usuario } from '../../usuarios/model/usuario';
+import { UsuarioService } from '../../usuarios/service/usuario.service';
 import { AuthService } from '../auth/auth.service';
-import { MyMessageService } from '../shared/services/my-message.service';
-import { EmailJaCadastradoValidator } from '../shared/validators/email-ja-cadastrado.validator';
-import { Permissao } from '../usuarios/model/permissao';
+import { MyMessageService } from '../../shared/services/my-message.service';
+import { EmailJaCadastradoValidator } from '../../shared/validators/email-ja-cadastrado.validator';
+import { Permissao } from '../../usuarios/model/permissao';
 
 declare var $: any;
 

@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { EquipamentosListaComponent } from './equipamentos-lista/equipamentos-lista.component';
 import { EquipamentosCadastroComponent } from './equipamentos-cadastro/equipamentos-cadastro.component';
 import { EquipamentosCadastroResolver } from './equipamentos-cadastro/equipamentos-cadastro.resolver';
-import { GenericGuardService } from '../guard/generic-guard.service';
+import { GenericGuardService } from '../core/guard/generic-guard.service';
 import { environment } from './../../environments/environment.prod';
 
 const routes: Routes = [

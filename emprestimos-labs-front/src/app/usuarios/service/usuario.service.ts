@@ -7,11 +7,11 @@ import { UsuarioDto } from '../model/usuario-dto';
 import { UsuarioFiltro } from '../model/usuario-filtro';
 import { UserLogged } from '../model/user-logged';
 import { Page } from '../../shared/page';
-import { TokenService } from '../../token/token.service';
+import { TokenService } from '../../core/token/token.service';
 import { environment } from '../../../environments/environment';
 import { MyMessageService } from './../../shared/services/my-message.service';
 import { Permissao } from '../model/permissao';
-import { MyWebSocket } from '../../websocket/websocket.service';
+import { MyWebSocket } from '../../core/websocket/websocket.service';
 
 @Injectable({
   providedIn: 'root'

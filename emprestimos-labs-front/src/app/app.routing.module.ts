@@ -1,15 +1,26 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { LoginComponent } from './core/login/login.component';
+import { HomeComponent } from './core/home/home.component';
+import { GenericGuardService } from './core/guard/generic-guard.service';
+import { environment } from '../environments/environment';
 
 const routes: Routes = [
   {
     path: 'login',
-    loadChildren: './login/login.module#LoginModule'
+    component: LoginComponent,
+    data: {
+      title: environment.title + ' - Login'
+    }
   },
 
   {
-    path: 'home',
-    loadChildren: './home/home.module#HomeModule'
+    path: 'home',    
+    component: HomeComponent,
+    canActivate: [ GenericGuardService ],
+    data: {
+      title: environment.title + ' - Home'
+    }
   },
 
   {

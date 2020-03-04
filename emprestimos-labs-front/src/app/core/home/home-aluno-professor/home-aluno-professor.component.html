@@ -1,16 +1,9 @@
 <div class="row">
   <div class="col-md-12">
     <p-card header="Meus Empréstimos">
-      <p-table #tableMeusEmprestimos
-        [value]="meusEmprestimos"
-        styleClass="p-2"
-        [responsive]="true"
-        [lazy]="true"
-        [paginator]="true"
-        [rows]="10"
-        [totalRecords]="totalRecords"
-        (onLazyLoad)="loadLazy($event)"
-        dataKey="idSaida">
+      <p-table [value]="meusEmprestimos" [totalRecords]="totalRecords"
+        [paginator]="true" [rows]="10" [lazy]="true" (onLazyLoad)="loadLazy($event)"
+        dataKey="idSaida" [responsive]="true" styleClass="p-2">
 
         <ng-template pTemplate="header">
           <tr>
@@ -25,9 +18,7 @@
         <ng-template pTemplate="body" let-emprestimo let-expanded="expanded">
           <tr>
             <td class="col-expand">
-              <a href=""
-                [pRowToggler]="emprestimo"
-                style="color: black;">
+              <a href="" [pRowToggler]="emprestimo" style="color: black;">
                 <span [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></span>
               </a>
             </td>
@@ -41,10 +32,8 @@
             <td class="col-acoes">
               <button pButton
                 (click)="exibirEmprestimo(emprestimo.idSaida)"
-                icon="pi pi-sign-in"
-                style="width: 32px;"
-                pTooltip="Visualizar"
-                tooltipPosition="top">
+                pTooltip="Visualizar" tooltipPosition="top"
+                icon="pi pi-sign-in" style="width: 32px;">
               </button>
             </td>
           </tr>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MyWebSocket } from 'src/app/websocket/websocket.service';
-import { Queue } from 'src/app/websocket/queue';
+import { MyWebSocket } from 'src/app/core/websocket/websocket.service';
+import { Queue } from 'src/app/core/websocket/queue';
 import { UsuarioService } from 'src/app/usuarios/service/usuario.service';
 
 @Component({

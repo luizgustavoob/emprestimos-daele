@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { EntradasListaComponent } from './entradas-lista/entradas-lista.component';
 import { EntradasCadastroComponent } from './entradas-cadastro/entradas-cadastro.component';
 import { EntradasCadastroResolver } from './entradas-cadastro/entradas-cadastro.resolver';
-import { GenericGuardService } from './../guard/generic-guard.service';
+import { GenericGuardService } from '../core/guard/generic-guard.service';
 import { environment } from './../../environments/environment.prod';
 
 const routes: Routes = [

@@ -3,7 +3,7 @@ import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { filter, map, switchMap } from 'rxjs/operators';
 import { UsuarioService } from './usuarios/service/usuario.service';
-import { MyWebSocket } from './websocket/websocket.service';
+import { MyWebSocket } from './core/websocket/websocket.service';
 
 @Component({
   selector: 'app-root',
