@@ -24,6 +24,7 @@ const routes: Routes = [
   {
     path: 'nova',
     component: EntradasCadastroComponent,
+    canActivate: [ GenericGuardService ],
     resolve: {
       entrada: EntradasCadastroResolver
     },
@@ -39,6 +40,7 @@ const routes: Routes = [
   {
     path: ':id',
     component: EntradasCadastroComponent,
+    canActivate: [ GenericGuardService ],
     resolve: {
       entrada: EntradasCadastroResolver
     },

@@ -23,6 +23,7 @@ const routes: Routes = [
   {
     path: 'nova',
     component: SaidasCadastroComponent,
+    canActivate: [ GenericGuardService ],
     resolve: {
       saida: SaidasCadastroResolver
     },
@@ -38,6 +39,7 @@ const routes: Routes = [
   {
     path: ':id',
     component: SaidasCadastroComponent,
+    canActivate: [ GenericGuardService ],
     resolve: {
       saida: SaidasCadastroResolver
     },
