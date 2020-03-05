@@ -4,4 +4,5 @@ export class UsuarioDto {
   nome: string;
   nrora: number;
   ativo: boolean;
+  permissao: number;
 }

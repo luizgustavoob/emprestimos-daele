@@ -1,6 +1,7 @@
 import { Permissao } from './permissao';
 
 export class Usuario {
+
   idUsuario: number;
   nome: string;
   email: string;

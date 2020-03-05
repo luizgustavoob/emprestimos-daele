@@ -1,0 +1,20 @@
+<form [formGroup]="formFiltro" (submit)="devePesquisarUsuarios()">
+  <div class="p-grid pt-2 pb-2">
+    <div class="p-col-12">
+      <label for="usuario">Usuário (Número RA ou E-mail)</label>
+      <p-autoComplete id="usuario" name="usuario" formControlName="usuario"
+        [suggestions]="usuariosList" [minLength]="3" (completeMethod)="loadUsuarios($event)" field="nome"        
+        class="ui-fluid">
+
+        <ng-template let-usuario pTemplate="item">
+          <div class="ui-helper-clearfix">{{ usuario.nome }} | {{ usuario.email }} | {{ usuario.nrora }}</div>
+        </ng-template>
+      </p-autoComplete>
+    </div>
+  </div>
+
+  <div class="pt-2">
+    <button type="submit" class="btn btn-warning mr-2">Pesquisar</button>
+    <button type="button" (click)="deveCadastrarUsuario()" class="btn btn-dark">Novo</button>
+  </div>
+</form>
