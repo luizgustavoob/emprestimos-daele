@@ -37,12 +37,10 @@ export class UsuariosComponent implements OnInit {
   }
 
   private findUsuariosByFiltros() {
-    this.usuarioService.findByFiltros(this.usuarioFiltro).subscribe( res => {console.log(res); this.usuarios = res;} );
+    this.usuarioService.findByFiltros(this.usuarioFiltro).subscribe( res => this.usuarios = res; );
   }
 
   onPesquisarUsuarios(event) {
-    console.log('Filtro', event.usuarioFiltro);
-
     this.usuarioFiltro = event.usuarioFiltro;
     this.usuarioFiltro.page = 0;
     this.usuarioFiltro.size = 10;
