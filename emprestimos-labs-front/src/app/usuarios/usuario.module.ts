@@ -10,13 +10,12 @@ import { PermissaoUsuarioPipe } from '../shared/pipes/permissao-usuario/permissa
 
 import { UsuariosRoutingModule } from './usuarios.routing.module';
 import { MessageModule } from '../shared/components/message/message.module';
+import { SignUpModule } from '../core/sign-up/signup.module';
 
 // primeng
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { TableModule } from 'primeng/table';
-import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
-import { RadioButtonModule } from 'primeng/radiobutton';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmationService } from 'primeng/api';
@@ -37,11 +36,10 @@ import { ConfirmationService } from 'primeng/api';
     AutoCompleteModule,
     TableModule,
     TooltipModule,
-    DialogModule,
     InputTextModule,
-    RadioButtonModule,
     ConfirmDialogModule,
-    UsuariosRoutingModule
+    UsuariosRoutingModule,
+    SignUpModule
   ],
   providers: [
     ConfirmationService

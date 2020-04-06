@@ -1,4 +1,3 @@
-<!-- login form -->
 <div class="container text-center mt-5 py-4 px-4" style="width: 45em;">
   <div class="row">
     <div class="col-md-6 offset-md-3">
@@ -6,215 +5,26 @@
         <img class="mb-4" src="assets/img/logo-utfpr.png" alt="" width="200" height="100">
         <h2 class="h3 mb-4 mr-auto">Empréstimos DAELE</h2>
 
-        <input type="email"
-          id="loginEmail"
-          name="loginEmail"
-          class="form-control rounded-0"
-          placeholder="E-mail"
-          formControlName="loginEmail">
+        <input type="email" id="loginEmail" name="loginEmail" formControlName="loginEmail"
+          placeholder="E-mail" class="form-control rounded-0">
 
-        <input type="password"
-          id="loginSenha"
-          name="loginSenha"
-          class="form-control rounded-0"
-          placeholder="Senha"
-          formControlName="loginSenha">
+        <input type="password" id="loginSenha" name="loginSenha" formControlName="loginSenha"
+          placeholder="Senha" class="form-control rounded-0">
 
-        <button
-          type="submit"
-          class="btn btn-lg btn-dark btn-block mb-3 mt-3"
-          [disabled]="loginForm.invalid">
+        <button type="submit" [disabled]="loginForm.invalid" class="btn btn-lg btn-dark btn-block mb-3 mt-3">
           Entrar
         </button>
 
         <div class="mb-3 mt-3">
-          <a id="forgot"
-            href="#forgotPassword"
-            data-target="#forgotPassword"
-            data-keyboard="true"
-            data-toggle="modal"
-            class="text-dark float-right">
+          <a id="forgot" href="javascript:;" (click)="forgotPassword()" class="text-dark float-right">
             Esqueci minha senha
           </a>
 
-          <a id="register"
-            href="#signup"
-            data-target="#signup"
-            data-keyboard="true"
-            data-toggle="modal"
-            class="text-dark float-left">
+          <a id="register" href="javascript:;" (click)="signup()" class="text-dark float-left">
             Quero me cadastrar!
           </a>
         </div>
       </form>
     </div>
-  </div>
-</div>
-
-<!-- modal signup -->
-<div class="modal fade" id="signup" name="signup" role="dialog" aria-labelledby="titleSignup" aria-hidden="true" tabindex="-1">
-  <div class="modal-dialog" role="document">
-    <form [formGroup]="signupForm" id="signupForm" (submit)="signup()" autocomplete="off">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="titleSignup">Quero me cadastrar!</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-
-        <div class="modal-body">
-          <div class="form-group">
-            <label for="nome">Nome</label>
-            <input type="text"
-              id="nome"
-              name="nome"
-              class="form-control"
-              placeholder="Aluno/Professor UTFPR"
-              formControlName="nome"
-              autofocus>
-
-            <app-message-error
-              [control]="signupForm.get('nome')"
-              error="required"
-              text="Informe o nome do seu usuário.">
-            </app-message-error>
-
-            <app-message-error
-              [control]="signupForm.get('nome')"
-              error="minlength"
-              text="Informe no mínimo {{ signupForm.get('nome').errors?.minlength?.requiredLength}} caracteres.">
-            </app-message-error>
-          </div>
-
-          <div class="form-group">
-            <label for="email">E-mail</label>
-            <input type="email"
-              id="email"
-              name="email"
-              class="form-control"
-              placeholder="meuemail@utfpr.edu.br"
-              formControlName="email">
-
-            <app-message-error
-              [control]="signupForm.get('email')"
-              error="required"
-              text="Informe o e-mail do seu usuário.">
-            </app-message-error>
-
-            <app-message-error
-              [control]="signupForm.get('email')"
-              error="email"
-              text="Informe um e-mail válido.">
-            </app-message-error>
-
-            <app-message-error
-              [control]="signupForm.get('email')"
-              error="maxlength"
-              text="Informe no máximo {{ signupForm.get('email').errors?.maxlength?.requiredLength }} caracteres.">
-            </app-message-error>
-
-            <app-message-error
-              [control]="signupForm.get('email')"
-              error="existe"
-              text="E-mail já cadastrado.">
-            </app-message-error>
-          </div>
-
-          <div class="form-group">
-            <label for="nrora">Número RA</label>
-            <input type="number"
-              id="nrora"
-              name="nrora"
-              class="form-control"
-              placeholder="Se você for um professor, não precisa informar este campo"
-              formControlName="nrora">
-
-            <app-message-error
-              [control]="signupForm.get('nrora')"
-              error="existe"
-              text="Número do RA já cadastrado.">
-            </app-message-error>
-          </div>
-
-          <div class="form-group">
-            <label for="senha">Senha</label>
-            <input type="password"
-              id="senha"
-              name="senha"
-              class="form-control"
-              formControlName="senha"
-              placeholder="!@#$%*&">
-
-            <app-message-error
-              [control]="signupForm.get('senha')"
-              error="required"
-              text="Informe a senha do seu usuário.">
-            </app-message-error>
-          </div>
-
-          <div>
-            <p-radioButton
-              name="permissao"
-              formControlName="permissao"
-              [value]="getValueAluno()"
-              label="Aluno">
-            </p-radioButton>
-
-            <p-radioButton
-              name="permissao"
-              formControlName="permissao"
-              [value]="getValueProfessor()"
-              label="Professor"
-              class="ml-2">
-            </p-radioButton>
-          </div>
-        </div>
-
-        <div class="modal-footer">
-          <button type="button"
-            type="submit"
-            class="btn btn-dark"
-            [disabled]="signupForm.invalid || signupForm.pending">
-            Finalizar cadastro
-          </button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
-
-<!-- modal forgot password -->
-<div class="modal fade" id="forgotPassword" name="forgotPassword" role="dialog" aria-labelledby="titleForgotPassword" aria-hidden="true" tabindex="-1">
-  <div class="modal-dialog" role="document">
-    <form [formGroup]="forgotPasswordForm" (submit)="forgotPassword()" autocomplete="off">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="titleForgotPassword">Esqueci minha senha</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-          <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-
-        <div class="modal-body">
-          <input type="email"
-            id="forgotEmail"
-            name="forgotEmail"
-            class="form-control"
-            placeholder="E-mail"
-            formControlName="forgotEmail"
-            autofocus>
-        </div>
-
-        <div class="modal-footer">
-          <button
-            type="submit"
-            class="btn btn-dark"
-            [disabled]="forgotPasswordForm.invalid">
-            Recuperar senha
-          </button>
-        </div>
-      </div>
-    </form>
   </div>
 </div>

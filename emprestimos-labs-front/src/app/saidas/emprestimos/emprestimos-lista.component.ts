@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Table } from 'primeng/table';
 import { LazyLoadEvent, ConfirmationService, SelectItem } from 'primeng/api';
-import { CalendarBase } from 'src/app/shared/calendar.base';
+import { CalendarBase } from '../../shared/calendar.base';
 import { Saida, SituacaoSaida } from '../model/saida';
 import { EmprestimoFiltro } from './emprestimo-filtro';
 import { SituacaoSaidaDescricao } from '../model/situacao-saida-descricao';
@@ -40,9 +40,9 @@ export class EmprestimosListaComponent extends CalendarBase implements OnInit {
 
   ngOnInit(): void {
     this.formFiltro = this.formBuilder.group({
-      data: [],
-      usuario: [],
-      situacao: []
+      data: '',
+      usuario: '',
+      situacao: ''
     });
     this.carregarSituacoes();
   }
@@ -59,10 +59,10 @@ export class EmprestimosListaComponent extends CalendarBase implements OnInit {
   }
 
   private findEmprestimosByFiltros() {
-    this.saidaService.findEmprestimosByFiltros(this.saidaFiltro).subscribe(
-      (resp) => {
-        this.totalRecords = resp.totalElements;
-        this.emprestimos = resp.content;
+    this.saidaService.findEmprestimosByFiltros(this.saidaFiltro)
+      .subscribe(res => {
+        this.totalRecords = res.totalElements;
+        this.emprestimos = res.content;
       }
     );
   }
@@ -83,9 +83,8 @@ export class EmprestimosListaComponent extends CalendarBase implements OnInit {
   }
 
   loadUsuarios(event) {
-    this.usuarioService.findByNroraOrEmail(event.query).subscribe(
-      (resp) => this.usuarios = resp
-    );
+    this.usuarioService.findByNroraOrEmail(event.query)
+      .subscribe(res => this.usuarios = res);
   }
 
   edit(idEmprestimo: number) {
@@ -99,8 +98,8 @@ export class EmprestimosListaComponent extends CalendarBase implements OnInit {
       acceptLabel: 'Excluir',
       rejectLabel: 'Cancelar',
       accept: () => {
-        this.saidaService.delete(idEmprestimo).subscribe(
-          () => {
+        this.saidaService.delete(idEmprestimo)
+          .subscribe(() => {
             this.table.reset();
             this.messageService.showMessage('success', 'Empréstimo removido com sucesso!');
           }
@@ -120,8 +119,8 @@ export class EmprestimosListaComponent extends CalendarBase implements OnInit {
       acceptLabel: 'Encerrar',
       rejectLabel: 'Cancelar',
       accept: () => {
-        this.saidaService.updateSituacao(idEmprestimo, SituacaoSaida.encerrada).subscribe(
-          () => {
+        this.saidaService.updateSituacao(idEmprestimo, SituacaoSaida.encerrada)
+          .subscribe(() => {
             this.table.reset();
             this.messageService.showMessage('success', 'Empréstimo atualizado com sucesso!');
           }
@@ -132,5 +131,9 @@ export class EmprestimosListaComponent extends CalendarBase implements OnInit {
 
   emprestimoAprovado(situacao: SituacaoSaida): boolean {
     return situacao === SituacaoSaida.aprovada;
+  }
+
+  emprestimoNaoEncerrado(situacao: SituacaoSaida): boolean {
+    return situacao !== SituacaoSaida.encerrada;
   }
 }

@@ -39,7 +39,7 @@ import { ConfirmationService } from 'primeng/api';
     TooltipModule,
     FinalidadeSaidaPipeModule,
     SituacaoSaidaPipeModule,
-    ConfirmDialogModule,
+    ConfirmDialogModule
   ],
   providers: [
     ConfirmationService

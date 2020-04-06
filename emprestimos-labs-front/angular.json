@@ -35,8 +35,6 @@
               "src/custom-primeng.css"
             ],
             "scripts": [
-              "./node_modules/jquery/dist/jquery.js",
-              "./node_modules/bootstrap/dist/js/bootstrap.bundle.js",
               "./node_modules/moment/moment.js",
               "./node_modules/sockjs-client/dist/sockjs.js",
               "./node_modules/stompjs/lib/stomp.js"

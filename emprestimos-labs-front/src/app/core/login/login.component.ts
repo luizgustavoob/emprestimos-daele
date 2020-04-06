@@ -1,14 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Usuario } from '../../usuarios/model/usuario';
-import { UsuarioService } from '../../usuarios/service/usuario.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../auth/auth.service';
 import { MyMessageService } from '../../shared/services/my-message.service';
-import { EmailJaCadastradoValidator } from '../../shared/validators/email-ja-cadastrado.validator';
-import { Permissao } from '../../usuarios/model/permissao';
-
-declare var $: any;
+import { SignUpComponent } from '../sign-up/signup.component';
+import { ForgotPasswordComponent } from '../forgot-password/forgotpassword.component';
 
 @Component({
   selector: 'app-login',
@@ -17,50 +14,22 @@ declare var $: any;
 export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
-  signupForm: FormGroup;
-  forgotPasswordForm: FormGroup;
   private fromUrl: string;
 
   constructor(private formBuilder: FormBuilder,
               private router: Router,
               private authService: AuthService,
-              private usuarioService: UsuarioService,
               private messageService: MyMessageService,
-              private emailExisteValidator: EmailJaCadastradoValidator,
-              private activatedRoute: ActivatedRoute) { }
+              private activatedRoute: ActivatedRoute,
+              private modalService: NgbModal) { }
 
   ngOnInit() {
-    this.activatedRoute.queryParams.subscribe(params => this.fromUrl = params.fromUrl);
-    this.configurarLogin();
-    this.configurarSignup();
-    this.configurarForgotPassword();
-  }
-
-  private configurarLogin() {
+    this.activatedRoute.queryParams
+      .subscribe(params => this.fromUrl = params.fromUrl);
+    
     this.loginForm = this.formBuilder.group({
       loginEmail: ['', [Validators.required, Validators.email]],
       loginSenha: ['', Validators.required]
-    });
-  }
-
-  private configurarSignup() {
-    this.signupForm = this.formBuilder.group({
-      nome: ['', [Validators.required, Validators.minLength(5)]],
-      email: ['', [Validators.required, Validators.email, Validators.maxLength(50)],
-        this.emailExisteValidator.verificaEmailJaCadastrado()],
-      nrora: '',
-      senha: ['', Validators.required],
-      permissao: [Permissao.aluno, Validators.required]
-    });
-
-    $('#signup').on('hidden.bs.modal', function() {
-      $(this).find('form')[0].reset();
-    });
-  }
-
-  private configurarForgotPassword() {
-    this.forgotPasswordForm = this.formBuilder.group({
-      forgotEmail: [ '', [Validators.required, Validators.email]]
     });
   }
 
@@ -68,8 +37,8 @@ export class LoginComponent implements OnInit {
     const email = this.loginForm.get('loginEmail').value;
     const senha = this.loginForm.get('loginSenha').value;
 
-    this.authService.authenticate(email, senha).subscribe(
-      () => {
+    this.authService.authenticate(email, senha)
+      .subscribe(() => {
         if (this.fromUrl) {
           this.router.navigateByUrl(this.fromUrl, {replaceUrl: true});
         } else {
@@ -80,39 +49,34 @@ export class LoginComponent implements OnInit {
   }
 
   signup() {
-    const usuario = this.signupForm.getRawValue() as Usuario;
-
-    if (!this.usuarioService.validarCadastro(usuario)) {
-      return;
-    }
-
-    this.usuarioService.save(0, usuario).subscribe(
-      () => {
-        this.signupForm.reset();
-        this.signupForm.get('permissao').setValue(Permissao.aluno);
-        $('#signup').modal('hide');
-        this.messageService.showMessage('success', 'Usuário cadastrado com sucesso. Aguardando aprovação.');
-      }
+    const modalRef = this.modalService.open(SignUpComponent);
+    modalRef.componentInstance.config = {
+      title: 'Quero me cadastrar!',
+      showPlaceHolders: true,
+      openByLogin: true
+    };
+    modalRef.result.then(
+      (res) => this.messageService.showMessage('success', 'Usuário cadastrado com sucesso. Aguardando aprovação.'),
+      (res) => {
+        if (res.msg) {
+          console.log(res.msg);
+          this.messageService.showMessage('info', `Atenção: ${res.msg}`);
+        }
+      }      
     );
   }
 
   forgotPassword() {
-    const email = this.forgotPasswordForm.get('forgotEmail').value;
-
-    this.usuarioService.forgotPassword(email).subscribe(
-      () => {
-        this.forgotPasswordForm.reset();
-        $('#forgotPassword').modal('hide');
-        this.messageService.showMessage('success', 'Uma nova senha foi enviada para o seu email.');
+    const modalRef = this.modalService.open(ForgotPasswordComponent);
+    modalRef.result.then(
+      (res) => this.messageService.showMessage('success', 'Uma nova senha foi enviada para o seu email.'),
+      (res) => {
+        if (res.msg) {
+          console.log(res.msg);
+          this.messageService.showMessage('info', `Atenção: ${res.msg}`);
+        }
       }
     );
   }
 
-  getValueAluno(): number {
-    return Permissao.aluno;
-  }
-
-  getValueProfessor(): number {
-    return Permissao.professor;
-  }
 }

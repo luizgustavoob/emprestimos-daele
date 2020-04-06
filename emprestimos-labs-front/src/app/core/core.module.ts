@@ -6,20 +6,26 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { MessageModule } from '../shared/components/message/message.module';
 import { HomeModule } from './home/home.module';
+import { SignUpModule } from './sign-up/signup.module';
 
-import { MenuComponent } from './header/menu/menu.component';
+import { MenuComponent } from './menu/menu.component';
 import { LoginComponent } from './login/login.component';
 import { HeaderComponent } from './header/header.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
+import { ForgotPasswordComponent } from './forgot-password/forgotpassword.component';
 import { UserRoleDirective } from '../shared/directives/user-role.directive';
 
 import { ConfirmationService } from 'primeng/api';
-import { RadioButtonModule } from 'primeng/radiobutton';
+
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
     HeaderComponent,
     MenuComponent,
     LoginComponent,
+    ChangePasswordComponent,
+    ForgotPasswordComponent,
     UserRoleDirective
   ],
   imports: [
@@ -29,15 +35,20 @@ import { RadioButtonModule } from 'primeng/radiobutton';
     HttpClientModule,
     MessageModule,
     HomeModule,
-    RadioButtonModule
+    NgbModule,
+    SignUpModule 
   ],
   providers: [
     ConfirmationService
   ],
+  entryComponents: [    
+    ChangePasswordComponent,
+    ForgotPasswordComponent
+  ],
   exports: [
     LoginComponent,
     HeaderComponent,
-    UserRoleDirective    
+    UserRoleDirective
   ]  
 })
 export class CoreModule { }

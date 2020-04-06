@@ -89,7 +89,7 @@ export class EntradasCadastroComponent extends CalendarBase implements OnInit {
       this.itens.push(item);
     } else {
       const itemUpd = this.itens.find(itemEntrada => itemEntrada.idEntradaItem === item.idEntradaItem);
-      itemUpd.equipamento = Object.assign(item.equipamento, item.equipamento);
+      itemUpd.equipamento = Object.assign(itemUpd.equipamento, item.equipamento);
       itemUpd.quantidade = item.quantidade;
       itemUpd.valorUnitario = item.valorUnitario;
     }

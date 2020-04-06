@@ -9,7 +9,8 @@ import { tap } from 'rxjs/operators';
 })
 export class AuthService {
 
-  constructor(private httpClient: HttpClient, private usuarioService: UsuarioService) { }
+  constructor(private httpClient: HttpClient, 
+              private usuarioService: UsuarioService) { }
 
   authenticate(username: string, password: string) {
     return this.httpClient.post(environment.api_auth, { username, password }, { observe: 'response'} )

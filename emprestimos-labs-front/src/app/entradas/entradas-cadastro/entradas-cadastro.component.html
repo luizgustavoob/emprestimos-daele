@@ -49,8 +49,7 @@
 
       <div class="p-grid">
         <div class="p-col-12">
-          <p-table #tableItens 
-            [value]="itens" [responsive]="true" [scrollable]="true"
+          <p-table #tableItens [value]="itens" [responsive]="true" [scrollable]="true"
             styleClass="mt-2" scrollHeight="400px">
 
             <ng-template pTemplate="header">
@@ -79,7 +78,7 @@
               </tr>
             </ng-template>
 
-            <ng-template pTemplate="summary" >
+            <ng-template pTemplate="summary">
               <div class="p-grid">
                 <div class="p-col-12 text-left">
                   <button pButton pTooltip="Adicionar" type="button"

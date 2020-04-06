@@ -10,9 +10,10 @@ import { UsuarioService } from '../../usuarios/service/usuario.service';
 })
 export class HeaderComponent implements OnInit {
   
-  userLogged$: Observable<UserLogged>;
+  userLogged$: Observable<String>;
   
-  constructor(private router: Router, private usuarioService: UsuarioService) {}
+  constructor(private router: Router, 
+              private usuarioService: UsuarioService) {}
   
   ngOnInit() {
     this.userLogged$ = this.usuarioService.getUser();

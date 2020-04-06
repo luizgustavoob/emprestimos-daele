@@ -30,7 +30,7 @@ export class HomeAlunoProfessorComponent implements OnInit {
     this.webSocket.subscribe(Queue.getQueueUser(this.usuarioService.getEmail()), function(msg) {
       const isHome = this.router.url.trim().toLowerCase().search('home') > 0;
       if (msg.body === 'emprestimo' && isHome) {        
-        this.getEmprestimosDoAluno(this.currentPage, this.maxRecords);
+        this.getEmprestimosDoUsuario(this.currentPage, this.maxRecords);
       } else if (msg.body === 'logout') {
         this.usuarioService.logout();
         this.router.navigate(['/login']);

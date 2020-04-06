@@ -1,14 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Table } from 'primeng/table';
 import { LazyLoadEvent, ConfirmationService } from 'primeng/api';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Usuario } from './model/usuario';
 import { UsuarioDto } from './model/usuario-dto';
 import { UsuarioFiltro } from './model/usuario-filtro';
 import { UsuarioService } from './service/usuario.service';
 import { MyMessageService } from '../shared/services/my-message.service';
-import { EmailJaCadastradoValidator } from '../shared/validators/email-ja-cadastrado.validator';
-import { Permissao } from './model/permissao';
+import { SignUpComponent } from '../core/sign-up/signup.component';
 
 @Component({
   selector: 'app-usuarios',
@@ -18,41 +18,30 @@ export class UsuariosComponent implements OnInit {
 
   @ViewChild('tableUsuarios', {static: false}) table: Table;
   formFiltro: FormGroup;
-  formUsuario: FormGroup;
   usuarioFiltro: UsuarioFiltro = new UsuarioFiltro();
   usuarios: UsuarioDto[] = [];
   usuariosList: Usuario[] = [];
   totalRecords = 0;
   private currentPage = 0;
-  private maxRecords = 10;
-  showDialog = false;
+  private maxRecords = 10;  
 
   constructor(private formBuilder: FormBuilder,
               private usuarioService: UsuarioService,
               private confirmationService: ConfirmationService,
-              private messageService: MyMessageService,
-              private emailExisteValidator: EmailJaCadastradoValidator) { }
+              private messageService: MyMessageService,              
+              private modalService: NgbModal) { }
 
   ngOnInit() {
     this.formFiltro = this.formBuilder.group({
-      usuario: ['']
-    });
-
-    this.formUsuario = this.formBuilder.group({
-      nome: ['', [Validators.required, Validators.minLength(5)]],
-      email: ['', [Validators.required, Validators.email, Validators.maxLength(50)],
-        this.emailExisteValidator.verificaEmailJaCadastrado()],
-      nrora: [''],
-      senha: ['', [Validators.required]],
-      permissao: [Permissao.aluno]
+      usuario: ''
     });
   }
 
   private findUsuariosByFiltros() {
-    this.usuarioService.findByFiltros(this.usuarioFiltro).subscribe(
-      (resp) => {
-        this.totalRecords = resp.totalElements;
-        this.usuarios = resp.content;
+    this.usuarioService.findByFiltros(this.usuarioFiltro)
+      .subscribe(res => {
+        this.totalRecords = res.totalElements;
+        this.usuarios = res.content;
       }
     );
   }
@@ -73,9 +62,8 @@ export class UsuariosComponent implements OnInit {
   }
 
   loadUsuarios(event) {
-    this.usuarioService.findByNroraOrEmail(event.query).subscribe(
-      resp => this.usuariosList = resp
-    );
+    this.usuarioService.findByNroraOrEmail(event.query)
+      .subscribe(res => this.usuariosList = res);
   }
 
   alterarSituacao(idUsuario: number, ativo: boolean) {
@@ -86,8 +74,8 @@ export class UsuariosComponent implements OnInit {
       acceptLabel: 'Confirmar',
       rejectLabel: 'Cancelar',
       accept: () => {
-        this.usuarioService.updateStatus(idUsuario, !ativo).subscribe(
-          () => {
+        this.usuarioService.updateStatus(idUsuario, !ativo)
+          .subscribe(() => {
             this.table.reset();
             this.messageService.showMessage('success', 'Usuário atualizado com sucesso!');
           }
@@ -97,39 +85,20 @@ export class UsuariosComponent implements OnInit {
   }
 
   cadastrarUsuario() {
-    this.showDialog = true;
-  }
-
-  salvarUsuario() {
-    const usuario = this.formUsuario.getRawValue() as Usuario;
-    usuario.ativo = true;
-
-    if (!this.usuarioService.validarCadastro(usuario)) {
-      return;
-    }
-
-    this.usuarioService.save(0, usuario).subscribe(
-      () => {
-        this.formUsuario.reset();
-        this.showDialog = false;
-        this.messageService.showMessage('success', 'Usuário cadastrado com sucesso!');
-      }
+    const modalRef = this.modalService.open(SignUpComponent);
+    modalRef.componentInstance.config = {
+      title: 'Cadastro de Usuário',
+      showPlaceHolders: false,
+      openByLogin: false
+    };
+    modalRef.result.then(
+      (res) => this.messageService.showMessage('success', 'Usuário cadastrado com sucesso!'),
+      (res) => {
+        if (res.msg) {
+          console.log(res.msg);
+          this.messageService.showMessage('info', `Atenção: ${res.msg}`);
+        }
+      }      
     );
-  }
-
-  getValueAluno(): number {
-    return Permissao.aluno;
-  }
-
-  getValueLaboratorista(): number {
-    return Permissao.laboratorista;
-  }
-
-  getValueAdmin(): number {
-    return Permissao.admin;
-  }
-
-  getValueProfessor(): number {
-    return Permissao.professor;
-  }
+  }  
 }

@@ -274,7 +274,7 @@ export class SaidasCadastroComponent extends CalendarBase implements OnInit {
       formItem.reset();
     }
     this.editando = false;
-  }
+  }  
 
   voltarParaLista() {
     if (this.isEmprestimo()) {

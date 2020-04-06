@@ -18,7 +18,7 @@ import { MyWebSocket } from '../../core/websocket/websocket.service';
 })
 export class UsuarioService extends CrudService<Usuario, number> {
 
-  private userLoggedSubject = new BehaviorSubject<UserLogged>(null); // armazena a emissão até que algum consumidor apareça
+  private userLoggedSubject = new BehaviorSubject<String>(null); // armazena a emissão até que algum consumidor apareça
 
   constructor(http: HttpClient,
               private tokenService: TokenService,
@@ -30,10 +30,9 @@ export class UsuarioService extends CrudService<Usuario, number> {
     }
   }
 
-  private decodeAndNotify() {
-    const userLogged = new UserLogged();
-    userLogged.userName = this.getUserName();
-    this.userLoggedSubject.next(userLogged);
+  private decodeAndNotify() {    
+    const userName = this.getUserName();
+    this.userLoggedSubject.next(userName);
   }
 
   private getUserName(): string {
@@ -169,17 +168,5 @@ export class UsuarioService extends CrudService<Usuario, number> {
   emailExiste(email: string): Observable<boolean> {
     const url = `${this.getUrl()}/email/${email}`;
     return this.http.get<boolean>(url);
-  }
-
-  validarCadastro(usuario: Usuario): boolean {
-    if (usuario.permissao === Permissao.aluno && !usuario.nrora) {
-      this.messageService.showMessage('info', 'Alunos devem informar o número do RA!');
-      return false;
-    } else if (usuario.permissao !== Permissao.aluno && usuario.nrora) {
-      this.messageService.showMessage('info', 'Apenas alunos devem informar o número do RA!');
-      return false;
-    }
-
-    return true;
   }
 }

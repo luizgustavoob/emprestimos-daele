@@ -3,7 +3,9 @@
 
   <div *ngIf="(userLogged$ | async) as usuario" class="bg-dark">
     <div class="col-md-6 offset-md-3 text-center">
-      <a href="javascript:;" (click)="logout()" class="text-light text-center">Bem vind@, {{ usuario.userName }}</a>
+      <a href="javascript:;" (click)="logout()" class="text-light text-center">
+        Bem vind@, {{ usuario }}
+      </a>
     </div>
   </div>
 </header>

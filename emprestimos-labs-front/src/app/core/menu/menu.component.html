@@ -1,0 +1,72 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a href="javascript:;" [routerLink]="['']"><img src="assets/img/logo-utfpr-branca.png" width="100" height="40" alt="UTFPR"></a>
+  <button class="navbar-toggler" type="button" (click)="isNavbarCollapsed = !isNavbarCollapsed" 
+    data-target="#menugeral" aria-controls="menugeral" aria-expanded="false" aria-label="Alterna navegação">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div [ngbCollapse]="isNavbarCollapsed" class="collapse navbar-collapse px-3 py-1" id="menugeral">
+    <ul class="navbar-nav mr-auto">
+      <li ngbDropdown [appUserRole]="['ROLE_LABORATORISTA', 'ROLE_ADMIN']" class="nav-item dropdown">
+        <a ngbDropdownToggle href="javascript:;" class="nav-link dropdown-toggle text-light" id="dropdownCadastros" role="button"
+          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Cadastros
+        </a>
+        <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdownCadastros">
+          <a class="dropdown-item" [routerLink]="['fornecedores']">
+            Fornecedores
+          </a>
+          <a class="dropdown-item" [routerLink]="['equipamentos']">
+            Equipamentos
+          </a>
+        </div>
+      </li>
+
+      <li ngbDropdown class="nav-item dropdown">
+        <a ngbDropdownToggle href="javascript:;" class="nav-link dropdown-toggle text-light" id="dropdownMovimentacoes" role="button"
+          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Movimentações
+        </a>
+        <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdownMovimentacoes">
+          <a [appUserRole]="['ROLE_LABORATORISTA', 'ROLE_ADMIN']" class="dropdown-item" [routerLink]="['entradas']">
+            Entradas
+          </a>
+          <a [appUserRole]="['ROLE_LABORATORISTA', 'ROLE_ADMIN']" class="dropdown-item" [routerLink]="['emprestimos']">
+            Empréstimos
+          </a>
+          <a [appUserRole]="['ROLE_ALUNO', 'ROLE_PROFESSOR']" class="dropdown-item" [routerLink]="['emprestimos', 'novo']">
+            Novo Empréstimo
+          </a>
+          <a [appUserRole]="['ROLE_LABORATORISTA', 'ROLE_ADMIN']" class="dropdown-item" [routerLink]="['baixas-estoque']">
+            Baixas de Estoque
+          </a>
+        </div>
+      </li>
+
+      <li ngbDropdown [appUserRole]="['ROLE_LABORATORISTA', 'ROLE_ADMIN']" class="nav-item dropdown">
+        <a ngbDropdownToggle href="javascript:;" class="nav-link dropdown-toggle text-light" id="dropdownRelatorios" role="button"
+          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Relatórios
+        </a>
+        <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdownRelatorios">
+          <a class="dropdown-item" [routerLink]="['ficha-de-estoque']">
+            Ficha de Estoque
+          </a>
+        </div>
+      </li>
+
+      <li ngbDropdown class="nav-item dropdown">
+        <a ngbDropdownToggle href="javascript:;" class="nav-link dropdown-toggle text-light" id="dropdownAdmin" role="button"
+          data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Administração
+        </a>
+        <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdownAdmin">
+          <a [appUserRole]="['ROLE_LABORATORISTA', 'ROLE_ADMIN']" class="dropdown-item" [routerLink]="['usuarios']">Usuários</a>
+          <a class="dropdown-item" href="javascript:;" (click)="changePassword()">
+            Alterar senha do usuário
+          </a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>

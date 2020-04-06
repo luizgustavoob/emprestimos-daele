@@ -7,7 +7,8 @@ import { UsuarioService } from '../../usuarios/service/usuario.service';
 })
 export class GenericGuardService implements CanActivate {
 
-  constructor(private usuarioService: UsuarioService, private router: Router) { }
+  constructor(private usuarioService: UsuarioService, 
+              private router: Router) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     if (!this.usuarioService.isLogged()) {

@@ -123,6 +123,8 @@
             </button>
 
             <button pButton
+              type="button"
+              *ngIf="emprestimoNaoEncerrado(emprestimo.situacao)"
               (click)="remove(emprestimo.idSaida)"
               pTooltip="Excluir"
               icon="pi pi-trash"

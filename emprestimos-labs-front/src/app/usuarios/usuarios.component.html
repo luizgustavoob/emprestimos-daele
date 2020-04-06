@@ -12,15 +12,9 @@
       <div class="p-grid pt-2 pb-2">
         <div class="p-col-12">
           <label for="usuario">Usuário (Número RA ou E-mail)</label>
-          <p-autoComplete
-            id="usuario"
-            name="usuario"
-            formControlName="usuario"
-            [suggestions]="usuariosList"
-            (completeMethod)="loadUsuarios($event)"
-            field="nome"
-            [minLength]="3"
-            class="ui-fluid">
+          <p-autoComplete id="usuario" name="usuario" formControlName="usuario"
+            [suggestions]="usuariosList" (completeMethod)="loadUsuarios($event)"
+            field="nome" [minLength]="3" class="ui-fluid">
 
             <ng-template let-usuario pTemplate="item">
               <div class="ui-helper-clearfix">{{ usuario.nome }} | {{ usuario.email }} | {{ usuario.nrora }}</div>
@@ -30,32 +24,16 @@
       </div>
 
       <div class="pt-2">
-        <button
-          type="submit"
-          class="btn btn-warning mr-2">Pesquisar
-        </button>
-
-        <button
-          type="button"
-          (click)="cadastrarUsuario()"
-          class="btn btn-dark">Novo
-        </button>
+        <button type="submit" class="btn btn-warning mr-2">Pesquisar</button>
+        <button type="button" (click)="cadastrarUsuario()" class="btn btn-dark">Novo</button>
       </div>
     </form>
   </div>
 
   <div class="mt-3 mb-3">
-    <p-table
-      #tableUsuarios
-      [value]="usuarios"
-      styleClass="p-2"
-      [lazy]="true"
-      [paginator]="true"
-      [rows]="10"
-      [totalRecords]="totalRecords"
-      (onLazyLoad)="loadLazy($event)"
-      [lazyLoadOnInit]="false"
-      [responsive]="true">
+    <p-table #tableUsuarios [value]="usuarios" styleClass="p-2" [lazy]="true"
+      [paginator]="true" [rows]="10" [totalRecords]="totalRecords" (onLazyLoad)="loadLazy($event)"
+      [lazyLoadOnInit]="false" [responsive]="true">
 
       <ng-template pTemplate="header">
         <tr>
@@ -76,12 +54,8 @@
           <td>{{ usuario.ativo | ativo}}</td>
           <td>{{ usuario.permissao | permissao }}</td>
           <td class="text-center col-acoes">
-            <button pButton
-              type="button"
-              (click)="alterarSituacao(usuario.idUsuario, usuario.ativo)"
-              pTooltip="Alterar situação"
-              icon="pi pi-undo"
-              style="width: 32px;">
+            <button pButton type="button" (click)="alterarSituacao(usuario.idUsuario, usuario.ativo)"
+              pTooltip="Alterar situação" icon="pi pi-undo" style="width: 32px;">
             </button>
           </td>
         </tr>
@@ -94,144 +68,6 @@
       </ng-template>
     </p-table>
   </div>
-
-  <p-dialog
-    header="Cadastro de Usuário"
-    [(visible)]="showDialog"
-    [responsive]="true"
-    showEffect="fade"
-    [closable]="true"
-    [modal]="true"
-    [style]="{width: '500px'}">
-
-    <form [formGroup]="formUsuario" (submit)="salvarUsuario()">
-      <div class="p-col-12">
-        <label for="nome">Nome</label>
-        <input pInputText
-          type="text"
-          id="nome"
-          name="nome"
-          class="form-control"
-          formControlName="nome"
-          autofocus>
-
-        <app-message-error
-          [control]="formUsuario.get('nome')"
-          error="required"
-          text="Informe o nome do usuário.">
-        </app-message-error>
-
-        <app-message-error
-          [control]="formUsuario.get('nome')"
-          error="minlength"
-          text="Informe no mínimo {{ formUsuario.get('nome').errors?.minlength?.requiredLength }} caracteres.">
-        </app-message-error>
-      </div>
-
-      <div class="p-col-12">
-        <label for="email">E-mail</label>
-        <input type="email"
-          id="email"
-          name="email"
-          class="form-control"
-          formControlName="email">
-
-        <app-message-error
-          [control]="formUsuario.get('email')"
-          error="required"
-          text="Informe o e-mail do usuário.">
-        </app-message-error>
-
-        <app-message-error
-          [control]="formUsuario.get('email')"
-          error="email"
-          text="Informe um e-mail válido.">
-        </app-message-error>
-
-        <app-message-error
-          [control]="formUsuario.get('email')"
-          error="maxlength"
-          text="Informe no máximo {{ formUsuario.get('email').errors?.maxlength?.requiredLength }} caracteres.">
-        </app-message-error>
-
-        <app-message-error
-          [control]="formUsuario.get('email')"
-          error="existe"
-          text="E-mail já cadastrado.">
-        </app-message-error>
-      </div>
-
-      <div class="p-col-12">
-        <label for="nrora">Número RA</label>
-        <input type="number"
-          id="nrora"
-          name="nrora"
-          class="form-control"
-          formControlName="nrora">
-      </div>
-
-      <div class="p-col-12">
-        <label for="senha">Senha</label>
-        <input type="password"
-          id="senha"
-          name="senha"
-          class="form-control"
-          formControlName="senha">
-
-        <app-message-error
-          [control]="formUsuario.get('senha')"
-          error="required"
-          text="Informe a senha do usuário.">
-        </app-message-error>
-      </div>
-
-
-      <div class="p-col-12">
-        <p-radioButton
-          name="permissao"
-          formControlName="permissao"
-          [value]="getValueAluno()"
-          label="Aluno">
-        </p-radioButton>
-
-        <p-radioButton
-          name="permissao"
-          formControlName="permissao"
-          [value]="getValueLaboratorista()"
-          label="Laboratorista"
-          class="ml-2">
-        </p-radioButton>
-
-        <p-radioButton
-          name="permissao"
-          formControlName="permissao"
-          [value]="getValueAdmin()"
-          label="Administrador"
-          class="ml-2">
-        </p-radioButton>
-
-        <p-radioButton
-          name="permissao"
-          formControlName="permissao"
-          [value]="getValueProfessor()"
-          label="Professor"
-          class="ml-2">
-        </p-radioButton>
-      </div>
-
-      <p-footer>
-        <div class="ui-dialog-buttonpane ui-helper-clearfix p-2">
-          <button pButton
-            type="submit"
-            icon="fa fa-check"
-            class="button-rigth"
-            label="Salvar"
-            [disabled]="formUsuario.invalid || formUsuario.pending">
-          </button>
-        </div>
-      </p-footer>
-    </form>
-  </p-dialog>
 </div>
 
 <p-confirmDialog></p-confirmDialog>
