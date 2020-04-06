@@ -4,6 +4,8 @@ import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
+import { UsuariosFiltroComponent } from './usuarios-filtro/usuarios-filtro.component';
+import { UsuariosTabelaComponent } from './usuarios-tabela/usuarios-tabela.component';
 import { UsuariosComponent } from './usuarios.component';
 import { AtivoPipe } from '../shared/pipes/ativo/ativo.pipe';
 import { PermissaoUsuarioPipe } from '../shared/pipes/permissao-usuario/permissao-usuario.pipe';
@@ -22,6 +24,8 @@ import { ConfirmationService } from 'primeng/api';
 
 @NgModule({
   declarations: [
+    UsuariosFiltroComponent,
+    UsuariosTabelaComponent,
     UsuariosComponent,
     AtivoPipe,
     PermissaoUsuarioPipe

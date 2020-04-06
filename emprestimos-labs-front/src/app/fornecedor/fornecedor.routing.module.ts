@@ -24,6 +24,7 @@ const routes: Routes = [
   {
     path: 'novo',
     component: FornecedorCadastroComponent,
+    canActivate: [ GenericGuardService ],
     resolve: {
       fornecedor: FornecedorCadastroResolver
     },
@@ -39,6 +40,7 @@ const routes: Routes = [
   {
     path: ':id',
     component: FornecedorCadastroComponent,
+    canActivate: [ GenericGuardService ],
     resolve: {
       fornecedor: FornecedorCadastroResolver
     },

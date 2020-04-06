@@ -1,0 +1,39 @@
+<p-table #tableUsuarios [value]="usuarios.content" [totalRecords]="usuarios.totalElements"
+  [lazy]="true" (onLazyLoad)="lazyLoad($event)" [lazyLoadOnInit]="false"
+  [paginator]="true" [rows]="10" [responsive]="true"
+  styleClass="p-2">
+
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Nome</th>
+      <th>E-mail</th>
+      <th>Número RA</th>
+      <th>Situação</th>
+      <th>Permissão</th>
+      <th class="text-center col-acoes">Atualizar</th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-usuario>
+    <tr>
+      <td>{{ usuario.nome }}</td>
+      <td>{{ usuario.email }}</td>
+      <td>{{ usuario.nrora }}</td>
+      <td>{{ usuario.ativo | ativo}}</td>
+      <td>{{ usuario.permissao | permissao }}</td>
+      <td class="text-center col-acoes">
+        <button pButton type="button" (click)="alterarSituacao(usuario.idUsuario, usuario.ativo)"
+          pTooltip="Alterar situação" icon="pi pi-undo" style="width: 32px;">
+        </button>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td [attr.colspan]="7">Nenhum usuário para ser exibido.</td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<p-confirmDialog></p-confirmDialog>
