@@ -9,32 +9,27 @@ import * as SockJS from 'sockjs-client';
 export class MyWebSocket {
 
   private stompClient;
-  private subscriptions: QueueSubscription[] = [];
-
-  async init(queueName = '', callback = (msg: any) => {}) {
-    const ws = new SockJS(environment.api_websocket);
-    this.stompClient = Stomp.over(ws);
-
-    if (!this.stompClient.connected) {
-      if (queueName) {
-        await this.stompClient.connect({}, function() {
-          const subscription = this.stompClient.subscribe(queueName, callback);
-          this.subscriptions.push(new QueueSubscription(queueName, subscription));      
-        }.bind(this));
-      } else {
-        await this.stompClient.connect({}, () => {});
-      }
-    }
-  }
+  private subscriptions: any[] = [];
 
   subscribe(queueName: string, callback: (msg: any) => void) {
     const existe = this.subscriptions.filter(qs => qs.queueName === queueName).length > 0;
     if (existe) {
       return;
     }
-    
+
+    if (!this.stompClient || !this.stompClient.connected) {
+      this.stompClient = Stomp.over(new SockJS(environment.api_websocket));
+      this.stompClient.connect({}, () => {
+        this.applySubscribe(queueName, callback);
+      });
+    } else {
+      this.applySubscribe(queueName, callback);
+    }
+  }
+
+  private applySubscribe(queueName: string, callback: (msg: any) => void) {
     const subscription = this.stompClient.subscribe(queueName, callback);
-    this.subscriptions.push(new QueueSubscription(queueName, subscription));
+    this.subscriptions.push({queueName, subscription});
   }
 
   unsubscribe(queueName) {
@@ -42,11 +37,12 @@ export class MyWebSocket {
     if (!queueSubscription) {
       return;
     }
+
     queueSubscription.subscription.unsubscribe();
     this.subscriptions = this.subscriptions.filter(qs => qs.queueName !== queueName);
   }
 
-  unSubscribeAll() {
+  unsubscribeAll() {    
     if (this.subscriptions.length === 0) {
       return;
     }
@@ -56,14 +52,9 @@ export class MyWebSocket {
   }
  
   destroy() {
-    this.unSubscribeAll();
+    this.unsubscribeAll();
     if (this.stompClient !== null) {
       this.stompClient.disconnect();
     }
   }
-}
-
-class QueueSubscription {
-
-  constructor(public readonly queueName, public subscription) { }
 }

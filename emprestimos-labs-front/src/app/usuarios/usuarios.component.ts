@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { Usuario } from './model/usuario';
 import { UsuarioDto } from './model/usuario-dto';
 import { UsuarioFiltro } from './model/usuario-filtro';
 import { UsuarioService } from './service/usuario.service';
@@ -16,7 +15,7 @@ import { Page } from '../shared/page';
 })
 export class UsuariosComponent {
 
-  usuarioFiltro: UsuarioFiltro;
+  usuarioFiltro: UsuarioFiltro = new UsuarioFiltro();
   usuarios: Page<UsuarioDto> = Object.assign({});
 
   constructor(private usuarioService: UsuarioService,

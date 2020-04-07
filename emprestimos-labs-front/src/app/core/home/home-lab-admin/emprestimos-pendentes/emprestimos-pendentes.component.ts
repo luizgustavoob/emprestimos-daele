@@ -5,7 +5,7 @@ import { ConfirmationService } from 'primeng/api';
 import { SaidaService } from '../../../../saidas/service/saida.service';
 import { Saida, SituacaoSaida } from '../../../../saidas/model/saida';
 import { MyWebSocket } from '../../../websocket/websocket.service';
-import { Queue } from '../../../websocket/queue';
+import { QueueUtils } from '../../../websocket/queue-util';
 
 @Component({
   selector: 'app-emprestimos-pendentes',
@@ -22,12 +22,11 @@ export class EmprestimosPendentesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.emprestimos$ = this.getEmprestimosPendentes();
 
-    this.webSocket.subscribe(Queue.NOVOS_EMPRESTIMOS, function(msg) {
-      if (msg.body === 'update') {
-        console.log('mensagem emp', msg.body);
-        this.emprestimos$ = this.getEmprestimosPendentes();
-      }
-    }.bind(this));
+    this.webSocket.subscribe(QueueUtils.NOVOS_EMPRESTIMOS, 
+      (msg) => {
+        if (msg.body === 'update') 
+          this.emprestimos$ = this.getEmprestimosPendentes();
+      });
   }
 
   private getEmprestimosPendentes() {
@@ -43,15 +42,13 @@ export class EmprestimosPendentesComponent implements OnInit, OnDestroy {
       message: 'Deseja realmente ' + msg + ' este empréstimo?',
       acceptLabel: 'Confirmar',
       rejectLabel: 'Cancelar',
-      accept: function() {
-        this.emprestimos$ = this.saidaService.updateSituacao(idSaida, novaSituacao)
-          .pipe(switchMap(() => this.getEmprestimosPendentes()));
-      }.bind(this)
+      accept: () => this.emprestimos$ = this.saidaService.updateSituacao(idSaida, novaSituacao)
+          .pipe(switchMap(() => this.getEmprestimosPendentes()))
     });
   }
 
   ngOnDestroy() {
-    this.webSocket.unsubscribe(Queue.NOVOS_EMPRESTIMOS);
+    this.webSocket.unsubscribe(QueueUtils.NOVOS_EMPRESTIMOS);
   }
 
 }

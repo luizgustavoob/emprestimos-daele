@@ -18,9 +18,7 @@ export class AppComponent implements OnInit, OnDestroy {
               private usuarioService: UsuarioService,
               private webSocket: MyWebSocket) { }
 
-  ngOnInit() {
-    this.webSocket.init();
-    
+  ngOnInit() {    
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .pipe(map( () => this.activatedRoute))

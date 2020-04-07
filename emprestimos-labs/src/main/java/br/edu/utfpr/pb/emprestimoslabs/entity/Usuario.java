@@ -130,4 +130,20 @@ public class Usuario implements Serializable, EntidadeBD, UserDetails {
 	public boolean isEnabled() {
 		return this.ativo;
 	}
+	
+	public boolean isAluno() {
+		return this.permissao.equals(Permissao.ALUNO);
+	}
+	
+	public boolean isProfessor() {
+		return this.permissao.equals(Permissao.PROFESSOR);
+	}
+	
+	public boolean isLaboratorista() {
+		return this.permissao.equals(Permissao.LABORATORISTA);
+	}
+	
+	public boolean isAdmin() {
+		return this.permissao.equals(Permissao.ADMIN);
+	}
 }

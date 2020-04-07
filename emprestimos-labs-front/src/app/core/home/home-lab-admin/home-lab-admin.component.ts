@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { MyWebSocket } from 'src/app/core/websocket/websocket.service';
-import { Queue } from 'src/app/core/websocket/queue';
+import { QueueUtils } from 'src/app/core/websocket/queue-util';
 import { UsuarioService } from 'src/app/usuarios/service/usuario.service';
 
 @Component({
@@ -10,14 +11,17 @@ import { UsuarioService } from 'src/app/usuarios/service/usuario.service';
 })
 export class HomeLaboratoristaAdminComponent implements OnInit {
   
-  constructor(private webSocket: MyWebSocket, private usuarioService: UsuarioService) {}
+  constructor(private router: Router, 
+              private webSocket: MyWebSocket,
+              private usuarioService: UsuarioService) { }  
   
   ngOnInit() {
-    this.webSocket.subscribe(Queue.getQueueUser(this.usuarioService.getEmail()), function(msg) {
-      if (msg.body === 'logout') {
-        this.usuarioService.logout();
-        this.router.navigate(['/login']);
-      }
-    });
+    this.webSocket.subscribe(QueueUtils.getQueueUser(this.usuarioService.getEmail()), 
+      (msg) => {
+        if (msg.body === 'logout') {
+          this.usuarioService.logout();
+          this.router.navigate(['/login']);
+        }
+      });
   } 
 }

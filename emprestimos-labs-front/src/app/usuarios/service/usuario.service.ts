@@ -5,12 +5,9 @@ import { CrudService } from '../../shared/services/crud.service';
 import { Usuario } from '../model/usuario';
 import { UsuarioDto } from '../model/usuario-dto';
 import { UsuarioFiltro } from '../model/usuario-filtro';
-import { UserLogged } from '../model/user-logged';
 import { Page } from '../../shared/page';
 import { TokenService } from '../../core/token/token.service';
 import { environment } from '../../../environments/environment';
-import { MyMessageService } from './../../shared/services/my-message.service';
-import { Permissao } from '../model/permissao';
 import { MyWebSocket } from '../../core/websocket/websocket.service';
 
 @Injectable({
@@ -22,7 +19,6 @@ export class UsuarioService extends CrudService<Usuario, number> {
 
   constructor(http: HttpClient,
               private tokenService: TokenService,
-              private messageService: MyMessageService,
               private webSocket: MyWebSocket) {
     super(environment.api_usuarios, http);
     if (this.tokenService.hasToken()) {
@@ -72,7 +68,7 @@ export class UsuarioService extends CrudService<Usuario, number> {
   logout() {
     this.tokenService.removeToken();
     this.userLoggedSubject.next(null);
-    this.webSocket.unSubscribeAll();
+    this.webSocket.unsubscribeAll();
   }
 
   removeToken() {

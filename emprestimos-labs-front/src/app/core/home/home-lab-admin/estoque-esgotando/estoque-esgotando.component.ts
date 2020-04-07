@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { MyWebSocket } from 'src/app/core/websocket/websocket.service';
 import { EquipamentoService } from 'src/app/equipamentos/service/equipamentos.service';
 import { EquipamentoDto } from 'src/app/equipamentos/model/equipamento-dto';
-import { Queue } from 'src/app/core/websocket/queue';
+import { QueueUtils } from 'src/app/core/websocket/queue-util';
 
 @Component({
   selector: 'app-estoque-esgotando',
@@ -17,12 +17,13 @@ export class EstoqueEsgotandoComponent implements OnInit, OnDestroy {
   
   ngOnInit() {
     this.equipamentos$ = this.getEquipamentosComEstoqueEsgotando();
-
-    this.webSocket.subscribe(Queue.ATUALIZAR_ESTOQUE, function(msg) {
-      if (msg.body === 'update') {
-        this.equipamentos$ = this.getEquipamentosComEstoqueEsgotando();
-      }
-    }.bind(this));
+    
+    this.webSocket.subscribe(QueueUtils.ATUALIZAR_ESTOQUE, 
+      (msg) => {        
+        if (msg.body === 'update') {
+          this.equipamentos$ = this.getEquipamentosComEstoqueEsgotando();
+        }        
+      });
   }
 
   private getEquipamentosComEstoqueEsgotando() {
@@ -30,6 +31,6 @@ export class EstoqueEsgotandoComponent implements OnInit, OnDestroy {
   }  
 
   ngOnDestroy() {
-    this.webSocket.unsubscribe(Queue.ATUALIZAR_ESTOQUE);
+    this.webSocket.unsubscribe(QueueUtils.ATUALIZAR_ESTOQUE);
   }
 }

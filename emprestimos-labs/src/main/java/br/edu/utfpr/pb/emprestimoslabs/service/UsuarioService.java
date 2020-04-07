@@ -33,7 +33,6 @@ import br.edu.utfpr.pb.emprestimoslabs.email.EmailService;
 import br.edu.utfpr.pb.emprestimoslabs.entity.Usuario;
 import br.edu.utfpr.pb.emprestimoslabs.entity.dto.ChangePasswordForm;
 import br.edu.utfpr.pb.emprestimoslabs.entity.dto.UsuarioDto;
-import br.edu.utfpr.pb.emprestimoslabs.entity.enums.Permissao;
 import br.edu.utfpr.pb.emprestimoslabs.entity.filter.UsuarioFiltro;
 import br.edu.utfpr.pb.emprestimoslabs.security.util.UsuarioAutenticado;
 import br.edu.utfpr.pb.emprestimoslabs.service.generic.CrudServiceImpl;
@@ -80,12 +79,19 @@ public class UsuarioService extends CrudServiceImpl<Usuario, Long> implements Us
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public void updateStatus(Long id, boolean ativo) {
 		Usuario usuario = usuarioData.findById(id).orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+		if (usuario.isAtivo() == ativo) {
+			return;
+		}
 		
-		boolean enviarEmailAprovacao = (usuario.getPermissao().equals(Permissao.ALUNO) || usuario.getPermissao().equals(Permissao.PROFESSOR))
-				&& ativo && !usuario.isAtivo() && usuario.getDataInativacao() == null;
+		boolean enviarEmailAprovacao = (usuario.isAluno() || usuario.isProfessor())
+				&& ativo 
+				&& !usuario.isAtivo() 
+				&& usuario.getDataInativacao() == null;
 		
-		boolean enviarEmailReprovacao = (usuario.getPermissao().equals(Permissao.ALUNO) || usuario.getPermissao().equals(Permissao.PROFESSOR))
-				&& !usuario.isAtivo() && !ativo;
+		boolean enviarEmailReprovacao = 
+				(usuario.isAluno() || usuario.isProfessor())
+				&& !usuario.isAtivo() 
+				&& !ativo;
 		
 		usuario.setAtivo(ativo);
 		usuario.setDataInativacao(ativo ? null : LocalDate.now());

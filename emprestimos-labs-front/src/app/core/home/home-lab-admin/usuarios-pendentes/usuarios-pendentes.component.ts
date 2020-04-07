@@ -5,7 +5,7 @@ import { ConfirmationService } from 'primeng/api';
 import { UsuarioService } from '../../../../usuarios/service/usuario.service';
 import { Usuario } from '../../../../usuarios/model/usuario';
 import { MyWebSocket } from '../../../websocket/websocket.service';
-import { Queue } from '../../../websocket/queue';
+import { QueueUtils } from '../../../websocket/queue-util';
 
 @Component({
   selector: 'app-usuarios-pendentes',
@@ -21,12 +21,13 @@ export class UsuariosPendentesComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.usuarios$ = this.getUsuariosPendentes();
-    
-    this.webSocket.subscribe(Queue.NOVOS_USUARIOS, function(msg) {
-      if (msg.body === 'update') {
-        this.usuarios$ = this.getUsuariosPendentes();
-      }
-    }.bind(this));
+
+    this.webSocket.subscribe(QueueUtils.NOVOS_USUARIOS, 
+      (msg) => {
+        if (msg.body === 'update') {
+          this.usuarios$ = this.getUsuariosPendentes();
+        }
+      });
   }
 
   private getUsuariosPendentes() {
@@ -41,14 +42,12 @@ export class UsuariosPendentesComponent implements OnInit, OnDestroy {
       message: 'Deseja realmente ' + msg + ' este usuário?',
       acceptLabel: 'Confirmar',
       rejectLabel: 'Cancelar',
-      accept: function() {
-        this.usuarios$ = this.usuarioService.updateStatus(idUsuario, aprovar)
-         .pipe(switchMap(() => this.getUsuariosPendentes()));
-      }.bind(this)
+      accept: () => this.usuarios$ = this.usuarioService.updateStatus(idUsuario, aprovar)
+         .pipe(switchMap(() => this.getUsuariosPendentes()))
     });
   }
 
   ngOnDestroy() {
-    this.webSocket.unsubscribe(Queue.NOVOS_USUARIOS);
+    this.webSocket.unsubscribe(QueueUtils.NOVOS_USUARIOS);
   }
 }

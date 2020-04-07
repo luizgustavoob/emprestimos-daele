@@ -5,7 +5,9 @@ import lombok.Setter;
 
 public enum Permissao {
 
-	ALUNO(1, "ROLE_ALUNO"), LABORATORISTA(2, "ROLE_LABORATORISTA"), ADMIN(3, "ROLE_ADMIN"),
+	ALUNO(1, "ROLE_ALUNO"), 
+	LABORATORISTA(2, "ROLE_LABORATORISTA"), 
+	ADMIN(3, "ROLE_ADMIN"),
 	PROFESSOR(4, "ROLE_PROFESSOR");
 
 	@Getter @Setter
