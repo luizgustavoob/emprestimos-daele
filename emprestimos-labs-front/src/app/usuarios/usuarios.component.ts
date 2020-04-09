@@ -30,11 +30,12 @@ export class UsuariosComponent {
   }
 
   private findUsuariosByFiltros() {
-    this.usuarioService.findByFiltros(this.usuarioFiltro).subscribe( res => this.usuarios = res );
+    this.usuarioService.findByFiltros(this.usuarioFiltro)
+      .subscribe( res => this.usuarios = res );
   }
 
   onCadastrarUsuario(event) {
-    const modalRef = this.modalService.open(SignUpComponent);
+    const modalRef = this.modalService.open(SignUpComponent, {windowClass: 'fadeIn'});
     modalRef.componentInstance.config = {
       title: 'Cadastro de Usuário',
       showPlaceHolders: false,

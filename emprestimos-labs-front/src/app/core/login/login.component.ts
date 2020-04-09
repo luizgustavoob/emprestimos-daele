@@ -49,15 +49,15 @@ export class LoginComponent implements OnInit {
   }
 
   signup() {
-    const modalRef = this.modalService.open(SignUpComponent);
+    const modalRef = this.modalService.open(SignUpComponent, {windowClass: 'fadeIn'});
     modalRef.componentInstance.config = {
       title: 'Quero me cadastrar!',
       showPlaceHolders: true,
       openByLogin: true
     };
     modalRef.result.then(
-      (res) => this.messageService.showMessage('success', 'Usuário cadastrado com sucesso. Aguardando aprovação.'),
-      (res) => {
+      res => this.messageService.showMessage('success', 'Usuário cadastrado com sucesso. Aguardando aprovação.'),
+      res => {
         if (res.msg) {
           console.log(res.msg);
           this.messageService.showMessage('info', `Atenção: ${res.msg}`);
@@ -67,10 +67,10 @@ export class LoginComponent implements OnInit {
   }
 
   forgotPassword() {
-    const modalRef = this.modalService.open(ForgotPasswordComponent);
+    const modalRef = this.modalService.open(ForgotPasswordComponent, {windowClass: 'fadeIn'});
     modalRef.result.then(
-      (res) => this.messageService.showMessage('success', 'Uma nova senha foi enviada para o seu email.'),
-      (res) => {
+      res => this.messageService.showMessage('success', 'Uma nova senha foi enviada para o seu email.'),
+      res => {
         if (res.msg) {
           console.log(res.msg);
           this.messageService.showMessage('info', `Atenção: ${res.msg}`);

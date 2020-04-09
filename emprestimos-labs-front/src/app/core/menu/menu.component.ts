@@ -6,8 +6,7 @@ import { ChangePasswordComponent } from '../change-password/change-password.comp
 
 @Component({
   selector: 'app-menu',
-  templateUrl: './menu.component.html',
-  styleUrls: ['./menu.component.css']
+  templateUrl: './menu.component.html'
 })
 export class MenuComponent {
 
@@ -23,7 +22,7 @@ export class MenuComponent {
   }
 
   changePassword() {
-    this.modalService.open(ChangePasswordComponent);
+    this.modalService.open(ChangePasswordComponent, {windowClass: 'fadeIn'});
   }
 
 }

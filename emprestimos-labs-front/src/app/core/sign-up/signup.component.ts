@@ -14,11 +14,7 @@ import { MyMessageService } from '../../shared/services/my-message.service';
 export class SignUpComponent implements OnInit {
 
   signupForm: FormGroup;
-  @Input() config: any;
-  
-  title: string;
-  showPlaceHolders: string;
-  openByLogin: boolean;
+  @Input() config: ConfigSignUp;
 
   constructor(public activeModal: NgbActiveModal,
               private formBuilder: FormBuilder,
@@ -27,8 +23,6 @@ export class SignUpComponent implements OnInit {
               private messageService: MyMessageService) { }
   
   ngOnInit(): void {
-    this.setConfig();
-
     this.signupForm = this.formBuilder.group({
       nome: ['', [Validators.required, Validators.minLength(5)]],
       email: ['', [Validators.required, Validators.email, Validators.maxLength(50)],
@@ -37,13 +31,7 @@ export class SignUpComponent implements OnInit {
       senha: ['', Validators.required],
       permissao: [Permissao.aluno, Validators.required]
     });
-  }
-
-  private setConfig() {
-    this.title = this.config.title;
-    this.showPlaceHolders = this.config.showPlaceHolders;
-    this.openByLogin = this.config.openByLogin;
-  }
+  }  
 
   private validarCadastro(usuario: Usuario): boolean {
     if (usuario.permissao === Permissao.aluno && !usuario.nrora) {
@@ -59,7 +47,7 @@ export class SignUpComponent implements OnInit {
 
   signup() {
     let usuario = this.signupForm.getRawValue() as Usuario;
-    usuario.ativo = !this.openByLogin;
+    usuario.ativo = !this.config.openByLogin;
     
     if (!this.validarCadastro(usuario)) {
       return;
@@ -90,4 +78,10 @@ export class SignUpComponent implements OnInit {
     return Permissao.laboratorista;
   }
 
+}
+
+export class ConfigSignUp {
+  title: string;
+  showPlaceHolders: boolean;
+  openByLogin: boolean;
 }

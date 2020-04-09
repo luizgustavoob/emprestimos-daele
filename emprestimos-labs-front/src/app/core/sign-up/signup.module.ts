@@ -22,9 +22,6 @@ import { RadioButtonModule } from 'primeng/radiobutton';
     MessageModule,
     RadioButtonModule
   ],
-  entryComponents: [
-    SignUpComponent
-  ],
   exports: [
     SignUpComponent
   ]

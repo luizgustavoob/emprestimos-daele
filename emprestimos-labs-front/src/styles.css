@@ -21,3 +21,30 @@
 .col-acoes-emprestimos {
   width: 150px;
 }
+
+@-webkit-keyframes fadeIn {
+  0%   {transform: scale(0.5)}
+  100% {transform: scale(1)}
+}
+ 
+@-moz-keyframes fadeIn {
+  0%   {transform: scale(0.5)}
+  100% {transform: scale(1)}
+}
+
+@-o-keyframes fadeIn {
+  0%   {transform: scale(0.5)}
+  100% {transform: scale(1)}
+}
+
+@keyframes fadeIn {
+  0%   {transform: scale(0.5)}
+  100% {transform: scale(1)}
+}
+
+.fadeIn {
+  -webkit-animation: fadeIn 0.3s;
+  -moz-animation: fadeIn 0.3s;
+  -o-animation: fadeIn 0.3s;
+  animation: fadeIn 0.3s;
+}

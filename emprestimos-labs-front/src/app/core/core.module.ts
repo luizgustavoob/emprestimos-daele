@@ -18,6 +18,7 @@ import { UserRoleDirective } from '../shared/directives/user-role.directive';
 import { ConfirmationService } from 'primeng/api';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { SignUpComponent } from './sign-up/signup.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   ],
   entryComponents: [    
     ChangePasswordComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    SignUpComponent  
   ],
   exports: [
     LoginComponent,

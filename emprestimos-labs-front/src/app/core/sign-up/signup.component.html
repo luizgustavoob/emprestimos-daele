@@ -1,110 +1,112 @@
-<form [formGroup]="signupForm" id="signupForm" (submit)="signup()" autocomplete="off">
-  <div class="modal-header">
-    <h5 class="modal-title">{{title}}</h5>
-    <button type="button" class="close" (click)="activeModal.dismiss('Cross click')" aria-label="Fechar">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-
-  <div class="modal-body">
-    <div class="form-group">
-      <label for="nome">Nome</label>
-      <input type="text" id="nome" name="nome"
-        formControlName="nome" placeholder="{{ showPlaceHolders ? 'Aluno/Professor UTFPR' : '' }}"
-        class="form-control" autofocus>
-
-      <app-message-error
-        [control]="signupForm.get('nome')"
-        error="required"
-        text="Informe o nome do seu usuário.">
-      </app-message-error>
-
-      <app-message-error
-        [control]="signupForm.get('nome')"
-        error="minlength"
-        text="Informe no mínimo {{ signupForm.get('nome').errors?.minlength?.requiredLength}} caracteres.">
-      </app-message-error>
+<div>
+  <form [formGroup]="signupForm" id="signupForm" (submit)="signup()" autocomplete="off">
+    <div class="modal-header">
+      <h5 class="modal-title">{{config.title}}</h5>
+      <button type="button" class="close" (click)="activeModal.dismiss('Cross click')" aria-label="Fechar">
+        <span aria-hidden="true">&times;</span>
+      </button>
     </div>
 
-    <div class="form-group">
-      <label for="email">E-mail</label>
-      <input type="email" id="email" name="email"
-        formControlName="email" placeholder="{{ showPlaceHolders ? 'meuemail@utfpr.edu.br' : '' }}"
-        class="form-control">
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="nome">Nome</label>
+        <input type="text" id="nome" name="nome"
+          formControlName="nome" placeholder="{{ config.showPlaceHolders ? 'Aluno/Professor UTFPR' : '' }}"
+          class="form-control" autofocus>
 
-      <app-message-error
-        [control]="signupForm.get('email')"
-        error="required"
-        text="Informe o e-mail do seu usuário.">
-      </app-message-error>
+        <app-message-error
+          [control]="signupForm.get('nome')"
+          error="required"
+          text="Informe o nome do seu usuário.">
+        </app-message-error>
 
-      <app-message-error
-        [control]="signupForm.get('email')"
-        error="email"
-        text="Informe um e-mail válido.">
-      </app-message-error>
+        <app-message-error
+          [control]="signupForm.get('nome')"
+          error="minlength"
+          text="Informe no mínimo {{ signupForm.get('nome').errors?.minlength?.requiredLength}} caracteres.">
+        </app-message-error>
+      </div>
 
-      <app-message-error
-        [control]="signupForm.get('email')"
-        error="maxlength"
-        text="Informe no máximo {{ signupForm.get('email').errors?.maxlength?.requiredLength }} caracteres.">
-      </app-message-error>
+      <div class="form-group">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email"
+          formControlName="email" placeholder="{{ config.showPlaceHolders ? 'meuemail@utfpr.edu.br' : '' }}"
+          class="form-control">
 
-      <app-message-error
-        [control]="signupForm.get('email')"
-        error="existe"
-        text="E-mail já cadastrado.">
-      </app-message-error>
+        <app-message-error
+          [control]="signupForm.get('email')"
+          error="required"
+          text="Informe o e-mail do seu usuário.">
+        </app-message-error>
+
+        <app-message-error
+          [control]="signupForm.get('email')"
+          error="email"
+          text="Informe um e-mail válido.">
+        </app-message-error>
+
+        <app-message-error
+          [control]="signupForm.get('email')"
+          error="maxlength"
+          text="Informe no máximo {{ signupForm.get('email').errors?.maxlength?.requiredLength }} caracteres.">
+        </app-message-error>
+
+        <app-message-error
+          [control]="signupForm.get('email')"
+          error="existe"
+          text="E-mail já cadastrado.">
+        </app-message-error>
+      </div>
+
+      <div class="form-group">
+        <label for="nrora">Número RA</label>
+        <input type="number" id="nrora" name="nrora"
+          formControlName="nrora" placeholder="{{ config.showPlaceHolders ? 'Se você for um professor, não precisa informar este campo' : '' }}"
+          class="form-control">
+
+        <app-message-error
+          [control]="signupForm.get('nrora')"
+          error="existe"
+          text="Número do RA já cadastrado.">
+        </app-message-error>
+      </div>
+
+      <div class="form-group">
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" name="senha"
+          formControlName="senha" placeholder="{{ config.showPlaceHolders ? '!@#$%*&' : '' }}" class="form-control">
+
+        <app-message-error
+          [control]="signupForm.get('senha')"
+          error="required"
+          text="Informe a senha do seu usuário.">
+        </app-message-error>
+      </div>
+
+      <div>
+        <p-radioButton name="permissao" formControlName="permissao"
+          [value]="getValueAluno()" label="Aluno">
+        </p-radioButton>
+
+        <p-radioButton name="permissao" formControlName="permissao"
+          [value]="getValueProfessor()" label="Professor" class="ml-2">
+        </p-radioButton>
+
+        <p-radioButton *ngIf="!config.openByLogin" name="permissao" formControlName="permissao"
+          [value]="getValueLaboratorista()" label="Laboratorista" class="ml-2">
+        </p-radioButton>
+
+        <p-radioButton *ngIf="!config.openByLogin" name="permissao" formControlName="permissao"
+          [value]="getValueAdmin()" label="Administrador" class="ml-2">
+        </p-radioButton>
+      </div>
     </div>
 
-    <div class="form-group">
-      <label for="nrora">Número RA</label>
-      <input type="number" id="nrora" name="nrora"
-        formControlName="nrora" placeholder="{{ showPlaceHolders ? 'Se você for um professor, não precisa informar este campo' : '' }}"
-        class="form-control">
-
-      <app-message-error
-        [control]="signupForm.get('nrora')"
-        error="existe"
-        text="Número do RA já cadastrado.">
-      </app-message-error>
+    <div class="modal-footer">
+      <button type="button" type="submit" [disabled]="signupForm.invalid || signupForm.pending"
+        class="btn btn-dark">
+        Finalizar cadastro
+      </button>
     </div>
-
-    <div class="form-group">
-      <label for="senha">Senha</label>
-      <input type="password" id="senha" name="senha"
-        formControlName="senha" placeholder="{{ showPlaceHolders ? '!@#$%*&' : '' }}" class="form-control">
-
-      <app-message-error
-        [control]="signupForm.get('senha')"
-        error="required"
-        text="Informe a senha do seu usuário.">
-      </app-message-error>
-    </div>
-
-    <div>
-      <p-radioButton name="permissao" formControlName="permissao"
-        [value]="getValueAluno()" label="Aluno">
-      </p-radioButton>
-
-      <p-radioButton name="permissao" formControlName="permissao"
-        [value]="getValueProfessor()" label="Professor" class="ml-2">
-      </p-radioButton>
-
-      <p-radioButton *ngIf="!openByLogin" name="permissao" formControlName="permissao"
-        [value]="getValueLaboratorista()" label="Laboratorista" class="ml-2">
-      </p-radioButton>
-
-      <p-radioButton *ngIf="!openByLogin" name="permissao" formControlName="permissao"
-        [value]="getValueAdmin()" label="Administrador" class="ml-2">
-      </p-radioButton>
-    </div>
-  </div>
-
-  <div class="modal-footer">
-    <button type="button" type="submit" [disabled]="signupForm.invalid || signupForm.pending"
-      class="btn btn-dark">
-      Finalizar cadastro
-    </button>
-  </div>
 </form>
+</div>

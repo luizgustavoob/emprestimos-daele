@@ -21,6 +21,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmationService } from 'primeng/api';
+import { SignUpComponent } from '../core/sign-up/signup.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,9 @@ import { ConfirmationService } from 'primeng/api';
   ],
   providers: [
     ConfirmationService
+  ],
+  entryComponents: [
+    SignUpComponent
   ],
   exports: [ UsuariosComponent ]
 })
