@@ -1,0 +1,37 @@
+<form [formGroup]="formFiltro" (submit)="devePesquisarEmprestimos()">
+  <div class="p-grid pt-2 pb-2">
+    <div class="p-col-4">
+      <label for="data">Data</label>
+      <p-calendar id="data" name="data" formControlName="data"
+        [locale]="pt" [dateFormat]="dateFormat"
+        [inline]="false" [readonlyInput]="false"
+        [showIcon]="true" class="ui-fluid">
+      </p-calendar>
+    </div>
+
+    <div class="p-col-4">
+      <label for="usuario">Usuário (Número RA ou E-mail)</label>
+      <p-autoComplete id="usuario" name="usuario" formControlName="usuario" 
+        [suggestions]="usuarios" (completeMethod)="loadUsuarios($event)"
+        field="nome" [minLength]="3" class="ui-fluid">
+
+        <ng-template let-usuario pTemplate="item">
+          <div class="ui-helper-clearfix">{{ usuario.nome }} | {{ usuario.email }} | {{ usuario.nrora }}</div>
+        </ng-template>
+      </p-autoComplete>
+    </div>
+
+    <div class="p-col-4">
+      <label for="situacao">Situação</label>
+      <p-multiSelect id="situacao" formControlName="situacao" defaultLabel="Selecionar..."
+        [options]="situacoes" [virtualScroll]="true" [filter]="true" selectedItemsLabel="{0} itens selecionados"
+        class="ui-fluid">
+      </p-multiSelect>
+    </div>
+  </div>
+
+  <div class="pt-2 pb-2">
+    <button type="submit" class="btn btn-warning mr-2">Pesquisar</button>
+    <button type="button" [routerLink]="['novo']" class="btn btn-dark">Novo</button>
+  </div>
+</form>

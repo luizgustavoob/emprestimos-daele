@@ -35,22 +35,22 @@ export class SaidaService extends CrudService<Saida, number> {
     );
   }
 
-  findEmprestimosByFiltros(saidaFiltro: EmprestimoFiltro): Observable<Page<Saida>> {
+  findEmprestimosByFiltros(emprestimosFiltro: EmprestimoFiltro): Observable<Page<Saida>> {
     const url = `${this.getUrl()}/filter?`;
     let params = new HttpParams();
-    params = params.set('page', saidaFiltro.page.toString());
-    params = params.set('size', saidaFiltro.size.toString());
+    params = params.set('page', emprestimosFiltro.page.toString());
+    params = params.set('size', emprestimosFiltro.size.toString());
 
-    if (saidaFiltro.data) {
-      params = params.set('data', moment(saidaFiltro.data).format('YYYY-MM-DD'));
+    if (emprestimosFiltro.data) {
+      params = params.set('data', moment(emprestimosFiltro.data).format('YYYY-MM-DD'));
     }
 
-    if (saidaFiltro.usuario) {
-      params = params.set('nrora', saidaFiltro.usuario.nrora.toString());
+    if (emprestimosFiltro.usuario) {
+      params = params.set('nrora', emprestimosFiltro.usuario.nrora.toString());
     }
 
-    if (saidaFiltro.situacao) {
-      params = params.set('situacao', saidaFiltro.situacao.toString());
+    if (emprestimosFiltro.situacao && emprestimosFiltro.situacao.length > 0) {
+      params = params.set('situacao', emprestimosFiltro.situacao.toString());
     }
 
     return this.http.get<Page<Saida>>(url, { params }).pipe(

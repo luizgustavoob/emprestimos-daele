@@ -5,6 +5,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { EmprestimosListaComponent } from './emprestimos-lista.component';
+import { EmprestimosFiltroComponent } from './emprestimos-filtro/emprestimos-filtro.component';
+import { EmprestimosTabelaComponent } from './emprestimos-tabela/emprestimos-tabela.component';
 
 import { SaidaCadastroModule } from './../cadastro/saidas-cadastro.module';
 import { SituacaoSaidaPipeModule } from './../../shared/pipes/situacao-saida/situacao-saida-pipe.module';
@@ -22,7 +24,11 @@ import { EmprestimosRoutingModule } from './emprestimos.routing.module';
 import { ConfirmationService } from 'primeng/api';
 
 @NgModule({
-  declarations: [ EmprestimosListaComponent ],
+  declarations: [ 
+    EmprestimosListaComponent,
+    EmprestimosFiltroComponent,
+    EmprestimosTabelaComponent
+   ],
   imports: [
     CommonModule,
     RouterModule,
