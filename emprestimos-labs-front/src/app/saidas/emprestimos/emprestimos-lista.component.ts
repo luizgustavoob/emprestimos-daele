@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Saida } from '../model/saida';
 import { SaidaService } from '../service/saida.service';
-import { EmprestimoFiltro } from './emprestimo-filtro';
+import { EmprestimoFiltro } from './model/emprestimo-filtro';
 import { Page } from '../../shared/page';
 
 @Component({

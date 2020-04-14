@@ -7,7 +7,7 @@ import { SituacaoSaidaDescricao } from '../../model/situacao-saida-descricao';
 import { SituacaoSaida } from '../../model/saida';
 import { CalendarBase } from '../../../shared/calendar.base';
 import { UsuarioService } from 'src/app/usuarios/service/usuario.service';
-import { EmprestimoFiltro } from '../emprestimo-filtro';
+import { EmprestimoFiltro } from '../model/emprestimo-filtro';
 
 @Component({
   selector: 'app-emprestimos-filtro',

@@ -6,7 +6,7 @@ import { CrudService } from '../../shared/services/crud.service';
 import { Saida, SituacaoSaida, TipoSaida } from '../model/saida';
 import { Page } from '../../shared/page';
 import { environment } from '../../../environments/environment';
-import { EmprestimoFiltro } from '../emprestimos/emprestimo-filtro';
+import { EmprestimoFiltro } from '../emprestimos/model/emprestimo-filtro';
 import { MyMessageService } from './../../shared/services/my-message.service';
 import * as moment from 'moment';
 

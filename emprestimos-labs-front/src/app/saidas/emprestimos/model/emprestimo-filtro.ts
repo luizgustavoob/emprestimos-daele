@@ -1,5 +1,5 @@
-import { Usuario } from '../../usuarios/model/usuario';
-import { SituacaoSaida } from '../model/saida';
+import { Usuario } from '../../../usuarios/model/usuario';
+import { SituacaoSaida } from '../../model/saida';
 
 export class EmprestimoFiltro {
   data: Date = new Date();
