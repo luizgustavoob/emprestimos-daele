@@ -49,9 +49,6 @@ import { SignUpComponent } from '../core/sign-up/signup.component';
   providers: [
     ConfirmationService
   ],
-  entryComponents: [
-    SignUpComponent
-  ],
   exports: [ UsuariosComponent ]
 })
 export class UsuarioModule { }

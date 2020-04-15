@@ -53,7 +53,6 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -132,6 +131,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "emprestimos-labs-front"
+    }
+  },
+  "defaultProject": "emprestimos-labs-front",
+  "cli": {
+    "analytics": "bbe49fce-c00c-456f-8d12-96cb31b93fc8"
+  }
 }

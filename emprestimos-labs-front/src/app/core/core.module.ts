@@ -42,11 +42,6 @@ import { SignUpComponent } from './sign-up/signup.component';
   providers: [
     ConfirmationService
   ],
-  entryComponents: [    
-    ChangePasswordComponent,
-    ForgotPasswordComponent,
-    SignUpComponent  
-  ],
   exports: [
     LoginComponent,
     HeaderComponent,

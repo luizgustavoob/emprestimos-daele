@@ -15,7 +15,7 @@ import { Page } from '../../../shared/page';
 })
 export class EmprestimosTabelaComponent {
 
-  @ViewChild('tableEmprestimos', {static: false}) table: Table;
+  @ViewChild('tableEmprestimos') table: Table;
   @Input() emprestimos: Page<Saida>;
   @Output() onLazyLoad = new EventEmitter();
 

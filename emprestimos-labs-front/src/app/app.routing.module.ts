@@ -25,47 +25,47 @@ const routes: Routes = [
 
   {
     path: 'fornecedores',
-    loadChildren: './fornecedor/fornecedor.module#FornecedorModule'
+    loadChildren: () => import('./fornecedor/fornecedor.module').then(m => m.FornecedorModule)
   },
 
   {
     path: 'equipamentos',
-    loadChildren: './equipamentos/equipamentos.module#EquipamentosModule'
+    loadChildren: () => import('./equipamentos/equipamentos.module').then(m => m.EquipamentosModule)
   },
 
   {
     path: 'entradas',
-    loadChildren: './entradas/entradas.module#EntradasModule'
+    loadChildren: () => import('./entradas/entradas.module').then(m => m.EntradasModule)
   },
 
   {
     path: 'emprestimos',
-    loadChildren: './saidas/emprestimos/emprestimos.module#EmprestimosModule'
+    loadChildren: () => import('./saidas/emprestimos/emprestimos.module').then(m => m.EmprestimosModule)
   },
 
   {
     path: 'baixas-estoque',
-    loadChildren: './saidas/baixas-estoque/baixas-estoque.module#BaixasEstoqueModule'
+    loadChildren: () => import('./saidas/baixas-estoque/baixas-estoque.module').then(m => m.BaixasEstoqueModule)
   },
 
   {
     path: 'usuarios',
-    loadChildren: './usuarios/usuario.module#UsuarioModule'
+    loadChildren: () => import('./usuarios/usuario.module').then(m => m.UsuarioModule)
   },
 
   {
     path: 'ficha-de-estoque',
-    loadChildren: './relatorios/ficha-de-estoque/ficha-de-estoque.module#FichaDeEstoqueModule'
+    loadChildren: () => import('./relatorios/ficha-de-estoque/ficha-de-estoque.module').then(m => m.FichaDeEstoqueModule)
   },
 
   {
     path: 'nao-autorizado',
-    loadChildren: './shared/components/unauthorized/unauthorized.module#UnauthorizedModule'
+    loadChildren: () => import('./shared/components/unauthorized/unauthorized.module').then(m => m.UnauthorizedModule)
   },
 
   {
     path: 'nao-encontrado',
-    loadChildren: './shared/components/not-found/not-found.module#NotFoundModule'
+    loadChildren: () => import('./shared/components/not-found/not-found.module').then(m => m.NotFoundModule)
   },
 
   { path: '', pathMatch: 'full', redirectTo: 'home' },

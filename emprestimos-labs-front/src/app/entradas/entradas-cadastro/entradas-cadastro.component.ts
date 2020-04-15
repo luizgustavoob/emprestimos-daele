@@ -16,7 +16,7 @@ import { CalendarBase } from './../../shared/calendar.base';
 })
 export class EntradasCadastroComponent extends CalendarBase implements OnInit {
 
-  @ViewChild('tableItens', {static: false}) tableItens: Table;
+  @ViewChild('tableItens') tableItens: Table;
   formEntrada: FormGroup;
   itens: EntradaItem[] = [];
   fornecedores: Fornecedor[];

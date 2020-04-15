@@ -12,7 +12,7 @@ import { Table } from 'primeng/table';
 })
 export class BaixasEstoqueListaComponent {
 
-  @ViewChild('tableBaixas', {static: false}) table: Table;
+  @ViewChild('tableBaixas') table: Table;
   baixasDeEstoque: Saida[] = [];
   totalRecords = 0;
   private currentPage = 0;

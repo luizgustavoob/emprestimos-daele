@@ -19,7 +19,7 @@ import { MyMessageService } from '../../shared/services/my-message.service';
 })
 export class SaidasCadastroComponent extends CalendarBase implements OnInit {
 
-  @ViewChild('tableItens', {static: false}) tableItens: Table;
+  @ViewChild('tableItens') tableItens: Table;
   saidaForm: FormGroup;
   saida: Saida = Object.assign({});
   itemSaida: SaidaItem = Object.assign({});

@@ -12,7 +12,7 @@ import { MyMessageService } from '../../shared/services/my-message.service';
 })
 export class UsuariosTabelaComponent {
   
-  @ViewChild('tableUsuarios', {static: false}) table: Table;  
+  @ViewChild('tableUsuarios') table: Table;  
   @Input() usuarios: Page<UsuarioDto[]>;
   @Output() onLazyLoad = new EventEmitter();
 

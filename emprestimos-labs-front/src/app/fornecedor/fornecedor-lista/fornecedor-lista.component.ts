@@ -13,7 +13,7 @@ import { MyMessageService } from '../../shared/services/my-message.service';
 })
 export class FornecedorListaComponent implements OnInit {
 
-  @ViewChild('tableFornecedores', {static: false}) table: Table;
+  @ViewChild('tableFornecedores') table: Table;
   fornecedores: Fornecedor[] = [];
   cidades: Cidade[] = [];
   totalRecords = 0;

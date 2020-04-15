@@ -15,8 +15,6 @@ import { ToastModule } from 'primeng/toast';
 import { AuthInterceptorService } from './core/auth/auth.interceptor';
 import { ErrorHandlerService } from './shared/services/error-handler.service';
 
-import { MessageService } from 'primeng/components/common/messageservice';
-
 registerLocaleData(localePt);
 
 @NgModule({
@@ -31,7 +29,6 @@ registerLocaleData(localePt);
     AppRoutingModule
   ],
   providers: [
-    MessageService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptorService,

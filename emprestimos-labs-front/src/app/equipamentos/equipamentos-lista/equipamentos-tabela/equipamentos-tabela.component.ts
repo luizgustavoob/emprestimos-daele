@@ -13,7 +13,7 @@ import { MyMessageService } from './../../../shared/services/my-message.service'
 })
 export class EquipamentosTabelaComponent {
   
-  @ViewChild('tableEquipamentos', {static: false}) table: Table;
+  @ViewChild('tableEquipamentos') table: Table;
   @Input() equipamentos: Page<Equipamento[]>;
   @Output() onLazyLoad = new EventEmitter();
 

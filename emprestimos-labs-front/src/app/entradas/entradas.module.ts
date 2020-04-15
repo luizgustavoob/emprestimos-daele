@@ -14,8 +14,7 @@ import { EntradasRoutingModule } from './entradas.routing.module';
 import { MessageModule } from '../shared/components/message/message.module';
 import { CNPJPipeModule } from '../shared/pipes/cnpj/cnpj-pipe.module';
 
-import { CurrencyMaskModule } from 'ng2-currency-mask';
-import { CurrencyMaskConfig, CURRENCY_MASK_CONFIG } from 'ng2-currency-mask/src/currency-mask.config';
+import { CurrencyMaskConfig, CurrencyMaskModule, CURRENCY_MASK_CONFIG } from 'ng2-currency-mask';
 
 // primeng
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -25,7 +24,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { CalendarModule } from 'primeng/calendar';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
-import { ConfirmationService, DialogService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
   align: 'right',
@@ -65,7 +64,6 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
   ],
   providers: [
     ConfirmationService,
-    DialogService,
     {
       provide: CURRENCY_MASK_CONFIG,
       useValue: CustomCurrencyMaskConfig

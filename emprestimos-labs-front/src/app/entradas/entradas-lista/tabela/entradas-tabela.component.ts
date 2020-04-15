@@ -13,7 +13,7 @@ import { Page } from './../../../shared/page';
 })
 export class EntradasTabelaComponent {
 
-  @ViewChild('tableEntradas', {static: false}) table: Table;
+  @ViewChild('tableEntradas') table: Table;
   @Input() entradas: Page<Entrada>;
   @Output() onLazyLoad = new EventEmitter();
 
